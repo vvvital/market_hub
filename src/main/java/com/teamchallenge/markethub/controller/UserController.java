@@ -6,7 +6,6 @@ import com.teamchallenge.markethub.model.User;
 import com.teamchallenge.markethub.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,10 +28,10 @@ public class UserController {
     public ResponseEntity<UserResponse> getUser(@PathVariable(name = "id") Integer id) {
         try {
             User user = userService.findById(id);
-            return ResponseEntity.ok(UserResponse.convertUserResponse(user));
+            return ResponseEntity.ok(UserResponse.convertToUserResponse(user));
         } catch (UserNotFoundException e) {
             log.error("{}", e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.notFound().build();
     }
 }

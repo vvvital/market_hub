@@ -14,6 +14,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.teamchallenge.markethub.exception.ErrorHandler.invalidLoginEmail;
 import static com.teamchallenge.markethub.exception.ErrorHandler.invalidLoginPassword;
 
@@ -24,6 +27,7 @@ public class LoginController {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final Map<String, Object> jsonResponse = new HashMap<>();
 
     public LoginController(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.authenticationManager = authenticationManager;
@@ -37,7 +41,9 @@ public class LoginController {
                     UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
             User user = (User) authentication.getPrincipal();
             String jwtToken = jwtUtils.generateTokenFromEmail(user.getUsername());
-            return ResponseEntity.ok().body(jwtToken);
+            jsonResponse.put("status", HttpStatus.OK.value());
+            jsonResponse.put("token", jwtToken);
+            return ResponseEntity.ok().body(jsonResponse);
         } catch (BadCredentialsException e) {
             log.error("Bad credentials: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(invalidLoginPassword());

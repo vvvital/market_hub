@@ -10,7 +10,14 @@ public final class ErrorHandler {
     public static Map<String, Object> invalidUniqueEmail() {
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", HttpStatus.CONFLICT.value());
-        responseBody.put("message", "user/seller with this email already exists");
+        responseBody.put("message", "A user with this email address already exists");
+        return responseBody;
+    }
+
+    public static Map<String, Object> invalidUniquePhone() {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", HttpStatus.CONFLICT.value());
+        responseBody.put("message", "A user with this phone number already exists");
         return responseBody;
     }
 

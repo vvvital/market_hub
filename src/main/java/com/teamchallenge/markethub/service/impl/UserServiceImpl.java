@@ -2,6 +2,7 @@ package com.teamchallenge.markethub.service.impl;
 
 import com.teamchallenge.markethub.exception.UserNotFoundException;
 import com.teamchallenge.markethub.model.User;
+import com.teamchallenge.markethub.model.role.Role.java.Role;
 import com.teamchallenge.markethub.repository.UserRepository;
 import com.teamchallenge.markethub.service.UserService;
 import lombok.NonNull;
@@ -11,8 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.SimpleTimeZone;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -28,6 +31,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String encodePassword = PasswordEncoderFactories.createDelegatingPasswordEncoder()
                 .encode(user.getPassword());
         user.setPassword(encodePassword);
+        user.setRegistrationDate(LocalDateTime.now());
         return userRepository.save(user);
     }
 
@@ -38,12 +42,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void remove(Integer id) {
-
+        Optional<User> user = userRepository.findById(id);
+        User removeUser = user.get();
+        userRepository.delete(removeUser);
     }
 
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
     }
 
     @Override
@@ -54,7 +65,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<User> findAll() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
