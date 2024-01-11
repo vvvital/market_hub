@@ -35,9 +35,11 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "phone", unique = true)
+    @NotBlank(message = "phone must not be empty")
+    @Column(name = "phone", unique = true, nullable = false)
     private String phone;
 
+    @NotBlank(message = "password must not be empty")
     @Column(name = "password", nullable = false)
     private String password;
 

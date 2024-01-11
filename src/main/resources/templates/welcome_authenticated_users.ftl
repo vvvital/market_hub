@@ -122,7 +122,7 @@
     </div>
     <div class="line"></div>
     <div class="footer">
-        <p>Copyright © 2023 MarketHub </p>
+        <p>Copyright © 2024 MarketHub </p>
     </div>
 </div>
 </body>

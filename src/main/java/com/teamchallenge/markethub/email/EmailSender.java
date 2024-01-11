@@ -27,23 +27,21 @@ public final class EmailSender {
     }
 
     public void sendEmail(String email, String firstname, String lastname) throws MessagingException, IOException, TemplateException {
-
         setMailProperties();
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(email);
-
+        helper.setSubject("Welcome to MarketHub!");
         String htmlBody = htmlBody(firstname, lastname);
-        helper.setText(htmlBody,true);
+        helper.setText(htmlBody, true);
 
         this.javaMailSender.send(message);
     }
 
     private String htmlBody(String firstname, String lastname) throws IOException, TemplateException {
-
-        Map<String,Object> model = new HashMap<>();
-        model.put("firstname",firstname);
-        model.put("lastname",lastname);
+        Map<String, Object> model = new HashMap<>();
+        model.put("firstname", firstname);
+        model.put("lastname", lastname);
 
         Template freemarkerTemplate = configurer.getConfiguration()
                 .getTemplate("welcome_authenticated_users.ftl");

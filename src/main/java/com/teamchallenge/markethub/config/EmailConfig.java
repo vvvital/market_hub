@@ -30,7 +30,6 @@ public class EmailConfig {
         javaMailSender.setUsername(username);
         javaMailSender.setDefaultEncoding("UTF-8");
         return javaMailSender;
-
     }
 
     @Bean

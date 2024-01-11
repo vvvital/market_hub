@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +29,18 @@ public class DebugController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserResponse>> getUsers() {
+    public ResponseEntity<List<UserDto>> getUsers() {
         List<User> userList = userService.findAll();
-        List<UserResponse> userResponseList = new ArrayList<>();
-        for (User user : userList) {
-            userResponseList.add(UserResponse.convertToUserResponse(user));
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User currentUser : userList) {
+            UserDto userDto = new UserDto(currentUser.getId(), currentUser.getFirstname(), currentUser.getLastname(),
+                    currentUser.getEmail(), currentUser.getPhone(), currentUser.getRegistrationDate(), currentUser.getRole());
+            userDtoList.add(userDto);
         }
-        return ResponseEntity.ok(userResponseList);
+
+        return ResponseEntity.ok(userDtoList);
     }
 }
+
+record UserDto(Integer id, String firstname, String lastname, String email,
+               String phone, LocalDateTime registrationDate, String role) {}

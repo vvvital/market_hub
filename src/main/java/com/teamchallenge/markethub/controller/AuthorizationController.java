@@ -70,6 +70,8 @@ public class AuthorizationController {
         String jwtToken = userAuthenticationAndGenerateToken(authRequest.email(), authRequest.password());
 
         jsonResponse.put("status", HttpStatus.CREATED.value());
+        jsonResponse.put("id", savedSeller.getId());
+        jsonResponse.put("username", savedSeller.getFirstname() + " " + savedSeller.getLastname());
         jsonResponse.put("token", jwtToken);
 
         sendEmail(authRequest.email(), authRequest.firstname(), authRequest.lastname());
