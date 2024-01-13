@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,7 +35,6 @@ public class AuthorizationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final EmailSender emailSender;
-    private final Map<String, Object> jsonResponse = new HashMap<>();
 
     public AuthorizationController(UserServiceImpl userService, AuthenticationManager authenticationManager,
                                    JwtUtils jwtUtils, EmailSender emailSender) {
@@ -69,6 +67,7 @@ public class AuthorizationController {
 
         String jwtToken = userAuthenticationAndGenerateToken(authRequest.email(), authRequest.password());
 
+        Map<String, Object> jsonResponse = new HashMap<>();
         jsonResponse.put("status", HttpStatus.CREATED.value());
         jsonResponse.put("id", savedSeller.getId());
         jsonResponse.put("username", savedSeller.getFirstname() + " " + savedSeller.getLastname());
@@ -89,7 +88,8 @@ public class AuthorizationController {
 
     private void sendEmail(String email, String firstname, String lastname) {
         try {
-            emailSender.sendEmail(email, firstname, lastname);
+            emailSender.setParams(email,firstname,lastname);
+            emailSender.sendGreetingEmail();
         } catch (MessagingException | TemplateException | IOException e) {
             log.error(e.getMessage());
         }

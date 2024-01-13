@@ -1,51 +1,55 @@
 package com.teamchallenge.markethub.email;
 
-import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Component
 public final class EmailSender {
 
+    //todo: explore a pattern strategy
     private final JavaMailSenderImpl javaMailSender;
-    private final FreeMarkerConfigurer configurer;
+    private final EmailUtils emailUtils;
+    private String email;
+    private String firstname;
+    private String lastname;
+    private final MimeMessage message;
+    private final MimeMessageHelper helper;
 
-    public EmailSender(JavaMailSenderImpl javaMailSender, FreeMarkerConfigurer configurer) {
+    public EmailSender(JavaMailSenderImpl javaMailSender, EmailUtils emailUtils) throws MessagingException {
         this.javaMailSender = javaMailSender;
-        this.configurer = configurer;
+        this.emailUtils = emailUtils;
+        setMailProperties();
+        this.message = javaMailSender.createMimeMessage();
+        this.helper = new MimeMessageHelper(message, true);
     }
 
-    public void sendEmail(String email, String firstname, String lastname) throws MessagingException, IOException, TemplateException {
-        setMailProperties();
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setTo(email);
-        helper.setSubject("Welcome to MarketHub!");
-        String htmlBody = htmlBody(firstname, lastname);
-        helper.setText(htmlBody, true);
+    public void sendGreetingEmail() throws MessagingException, IOException, TemplateException {
+        helper.setTo(this.email);
+        helper.setSubject(EmailSubjects.WELCOME.text());
+        helper.setText(emailUtils.htmlBodyForTheGreetingEmail(firstname, lastname), true);
 
         this.javaMailSender.send(message);
     }
 
-    private String htmlBody(String firstname, String lastname) throws IOException, TemplateException {
-        Map<String, Object> model = new HashMap<>();
-        model.put("firstname", firstname);
-        model.put("lastname", lastname);
+    public void sendEmailForPasswordChange() throws MessagingException, IOException, TemplateException {
+        helper.setTo(this.email);
+        helper.setSubject(EmailSubjects.RESET_PASSWORD.text());
+        helper.setText(emailUtils.htmlBodyForPasswordChange(firstname, lastname), true);
 
-        Template freemarkerTemplate = configurer.getConfiguration()
-                .getTemplate("welcome_authenticated_users.ftl");
-        return FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerTemplate, model);
+        this.javaMailSender.send(message);
+    }
+
+    public void setParams(String email, String firstname, String lastname) {
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
     private void setMailProperties() {
