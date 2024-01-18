@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @Configuration
+@EnableAsync
 public class EmailConfig {
 
     @Value("${spring.mail.host}")

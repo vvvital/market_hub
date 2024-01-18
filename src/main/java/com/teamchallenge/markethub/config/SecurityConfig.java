@@ -32,6 +32,9 @@ public class SecurityConfig {
     private final AuthEntryPointJwt authEntryPointJwt;
     private final JwtUtils jwtUtils;
 
+    private final String[] postHttpRequests = new String[] {"/markethub/authorization",
+            "/markethub/login","markethub/users/reset_password","markethub/users/{id}/change_password"};
+
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
         this.userService = userService;
         this.authEntryPointJwt = authEntryPointJwt;
@@ -39,13 +42,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain auth(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/markethub/authorization",
-                                "/markethub/login").permitAll()
-                        .requestMatchers("/markethub/del/{id}", "/markethub/all").permitAll() // debug
+                        .requestMatchers(HttpMethod.POST, postHttpRequests).permitAll()
+                        .requestMatchers("/markethub/del/{id}", "/markethub/all", "markethub/users/{id}/change_password").permitAll() // debug
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
@@ -56,7 +58,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return  new AuthTokenFilter(jwtUtils,userService);
+        return new AuthTokenFilter(jwtUtils,userService);
     }
 
     @Bean

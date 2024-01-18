@@ -111,7 +111,7 @@
     </div>
     <div class="line"></div>
     <div class="message">
-        <p class="hello-user">Hi, ${firstname} ${lastname}!</p>
+        <p class="hello-user">Hi, ${name}!</p>
         <p class="text">Your account has been successfully created. Click the button below to go to your profile.</p>
         <button class="button">Profile</button>
     </div>

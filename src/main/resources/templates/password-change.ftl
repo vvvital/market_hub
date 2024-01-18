@@ -63,7 +63,7 @@
         }
 
         .button {
-            width: 155px;
+            width: 185px;
             text-align: center;
             background-color: #7F33CB;
             color: #ffffff;
@@ -111,7 +111,7 @@
     </div>
     <div class="line"></div>
     <div class="message">
-        <p class="hello-user">Hi, ${firstname} ${lastname}!</p>
+        <p class="hello-user">Hi, ${name}!</p>
         <p class="text">It looks like you forgot your account password. To change your password, click on the button below.</p>
         <button class="button">Reset password</button>
     </div>

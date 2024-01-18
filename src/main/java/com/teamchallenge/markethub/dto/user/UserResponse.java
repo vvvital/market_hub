@@ -6,11 +6,12 @@ import com.teamchallenge.markethub.model.role.Role.java.Role;
 
 import java.time.LocalDateTime;
 
-public record UserResponse(String firstname, String lastname, String email, String phone, LocalDateTime registrationDate, String role) {
+public record UserResponse(String firstname, String lastname, String email, String phone,
+                           LocalDateTime registrationDate, String role) {
 
     public static UserResponse convertToUserResponse(User user) {
         return new UserResponse(user.getFirstname(),
-                user.getLastname(), user.getEmail(),user.getPhone(), user.getRegistrationDate(),user.getRole());
+                user.getLastname(), user.getEmail(), user.getPhone(), user.getRegistrationDate(), user.getRole());
     }
 
     public static User convertToNewSeller(AuthorizationRequest authorizationRequest) {

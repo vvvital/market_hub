@@ -14,7 +14,6 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-
     private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${jwtExpirationMs}")

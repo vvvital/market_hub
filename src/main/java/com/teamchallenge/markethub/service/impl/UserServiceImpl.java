@@ -1,8 +1,10 @@
 package com.teamchallenge.markethub.service.impl;
 
+import com.teamchallenge.markethub.exception.ErrorMessages;
+import com.teamchallenge.markethub.exception.UserExistException;
 import com.teamchallenge.markethub.exception.UserNotFoundException;
+import com.teamchallenge.markethub.exception.UserUpdateException;
 import com.teamchallenge.markethub.model.User;
-import com.teamchallenge.markethub.model.role.Role.java.Role;
 import com.teamchallenge.markethub.repository.UserRepository;
 import com.teamchallenge.markethub.service.UserService;
 import lombok.NonNull;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.SimpleTimeZone;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.save(user);
     }
 
+
     @Override
     public void remove(Integer id) {
         Optional<User> user = userRepository.findById(id);
@@ -58,9 +60,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public boolean findByEmailAndPhone(String email, String phone) throws UserExistException {
+        User user = userRepository.findByEmailOrPhone(email, phone);
+        if (user != null) {
+            throw new UserExistException();
+        }
+        return false;
+    }
+
+    @Override
     public User findById(Integer id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        return user.orElseThrow(() -> new UserNotFoundException("User with this 'id' does not exist"));
+        return user.orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.text()));
     }
 
     @Override
@@ -68,10 +79,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
-    @Override
-    public List<User> findAllByRole() {
-        return null;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

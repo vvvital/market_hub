@@ -3,7 +3,7 @@ package com.teamchallenge.markethub.email;
 public enum EmailSubjects {
 
     WELCOME ("Welcome to MarketHub"),
-    RESET_PASSWORD ("Reset password");
+    RESET_PASSWORD ("Reset Password");
 
     private final String subject;
 
