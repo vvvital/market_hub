@@ -1,4 +1,6 @@
-package com.teamchallenge.markethub.exception;
+package com.teamchallenge.markethub.error.exception;
+
+import com.teamchallenge.markethub.error.ErrorMessages;
 
 public class UserExistException extends Exception {
     public UserExistException() {

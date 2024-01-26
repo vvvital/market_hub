@@ -5,7 +5,6 @@ import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +13,6 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,33 +23,29 @@ public class EmailSender {
     private final FreeMarkerConfigurer configurer;
 
     @Async
-    public void sendAsyncMail(String email, String name, EmailSubjects subject) throws MessagingException, IOException, TemplateException {
-        message(email, name, subject);
+    public void asyncSendMail(String email, Map<String, Object> params, CustomTemplates template) throws MessagingException, IOException, TemplateException {
+        MimeMessage message = configureMimeMessage(email, params, template);
+        this.javaMailSender.send(message);
     }
 
-    public void sendMail(String email, String name, EmailSubjects subject) throws MessagingException, IOException, TemplateException {
-        message(email, name, subject);
+    public void sendMail(String email, Map<String, Object> params, CustomTemplates template) throws MessagingException, IOException, TemplateException {
+        MimeMessage message = configureMimeMessage(email, params, template);
+        this.javaMailSender.send(message);
     }
 
-    private void message(String email, String name, EmailSubjects subject) throws MessagingException, IOException, TemplateException {
+    private MimeMessage configureMimeMessage(String email, Map<String, Object> params, CustomTemplates template) throws MessagingException, IOException, TemplateException {
         MimeMessage message = javaMailSender.createMimeMessage();
         setMailProperties();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(email);
-        helper.setSubject(subject.text());
-        switch (subject) {
-            case WELCOME -> helper.setText(htmlBody(name, "welcome_authenticated_users.ftl"), true);
-            case RESET_PASSWORD -> helper.setText(htmlBody(name, "password-change.ftl"), true);
-        }
-
-        this.javaMailSender.send(message);
+        helper.setSubject(template.getSubject());
+        helper.setText(getStringTemplate(params, template.getTemplatePath()), true);
+        return message;
     }
 
-    private String htmlBody(String name, String template) throws IOException, TemplateException {
-        Map<String, Object> model = new HashMap<>();
-        model.put("name", name);
+    private String getStringTemplate(Map<String, Object> model, String templatePath) throws TemplateException, IOException {
         Template freemarkerTemplate = configurer.getConfiguration()
-                .getTemplate(template);
+                .getTemplate(templatePath);
         return FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerTemplate, model);
     }
 

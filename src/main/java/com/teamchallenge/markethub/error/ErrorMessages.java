@@ -1,4 +1,4 @@
-package com.teamchallenge.markethub.exception;
+package com.teamchallenge.markethub.error;
 
 public enum ErrorMessages {
     USER_NOT_FOUND("user_not_found"),

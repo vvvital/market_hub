@@ -1,9 +1,8 @@
 package com.teamchallenge.markethub.service.impl;
 
-import com.teamchallenge.markethub.exception.ErrorMessages;
-import com.teamchallenge.markethub.exception.UserExistException;
-import com.teamchallenge.markethub.exception.UserNotFoundException;
-import com.teamchallenge.markethub.exception.UserUpdateException;
+import com.teamchallenge.markethub.error.ErrorMessages;
+import com.teamchallenge.markethub.error.exception.UserExistException;
+import com.teamchallenge.markethub.error.exception.UserNotFoundException;
 import com.teamchallenge.markethub.model.User;
 import com.teamchallenge.markethub.repository.UserRepository;
 import com.teamchallenge.markethub.service.UserService;
@@ -37,26 +36,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User update(User user) {
-        return userRepository.save(user);
+    public void update(User user) {
+        userRepository.save(user);
     }
 
 
     @Override
-    public void remove(Integer id) {
+    public void remove(Integer id) throws UserNotFoundException {
         Optional<User> user = userRepository.findById(id);
-        User removeUser = user.get();
-        userRepository.delete(removeUser);
+        userRepository.delete(user.orElseThrow(() ->
+                new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.text())));
     }
 
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public User findByPhone(String phone) {
-        return userRepository.findByPhone(phone);
     }
 
     @Override

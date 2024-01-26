@@ -25,7 +25,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> loginSeller(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new
                 UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
         User userDetails = (User) authentication.getPrincipal();

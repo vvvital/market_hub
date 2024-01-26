@@ -47,13 +47,14 @@ public class SecurityConfig {
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, postHttpRequests).permitAll()
-                        .requestMatchers("/markethub/del/{id}", "/markethub/all", "markethub/users/{id}/change_password").permitAll() // debug
+                        .requestMatchers("/markethub/del/{id}", "/markethub/all",
+                                "markethub/users/{id}/change_password").permitAll() // debug
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .exceptionHandling(except -> except.authenticationEntryPoint(authEntryPointJwt))
-                    .build();
+                .build();
     }
 
     @Bean

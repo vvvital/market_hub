@@ -1,5 +1,7 @@
-package com.teamchallenge.markethub.exception;
+package com.teamchallenge.markethub.error;
 
+import com.teamchallenge.markethub.error.exception.UserExistException;
+import com.teamchallenge.markethub.error.exception.UserNotFoundException;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
@@ -22,65 +24,65 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     protected ResponseEntity<?> handleUserNotFoundException(UserNotFoundException e) {
         log.error("{}", e.getMessage());
-        ApiError apiError = new ApiError(new Error(
-                404, ErrorMessages.USER_NOT_FOUND.text()));
-        return ResponseEntity.status(404).body(apiError);
+        ResponseApiError responseApiError = new ResponseApiError(
+                new ErrorDetails(404, ErrorMessages.USER_NOT_FOUND.text()));
+        return ResponseEntity.status(404).body(responseApiError);
     }
 
     @ExceptionHandler(MessagingException.class)
     protected ResponseEntity<?> handleMessagingException(MessagingException e) {
         log.error("{}", e.getMessage());
-        ApiError apiError = new ApiError(new Error(
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(apiError);
+        return ResponseEntity.status(500).body(responseApiError);
     }
 
     @ExceptionHandler(IOException.class)
     protected ResponseEntity<?> handleIOException(IOException e) {
         log.error("{}", e.getMessage());
-        ApiError apiError = new ApiError(new Error(
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 422, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(422).body(apiError);
+        return ResponseEntity.status(422).body(responseApiError);
     }
 
     @ExceptionHandler(TemplateException.class)
     protected ResponseEntity<?> handleTemplateException(TemplateException e) {
         log.error("{}", e.getMessage());
-        ApiError apiError = new ApiError(new Error(
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(apiError);
+        return ResponseEntity.status(500).body(responseApiError);
     }
 
     @ExceptionHandler(MailSendException.class)
     protected ResponseEntity<?> handleMailSendException(MailSendException e) {
         log.error("{}", e.getMessage());
-        ApiError apiError = new ApiError(new Error(
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(apiError);
+        return ResponseEntity.status(500).body(responseApiError);
     }
 
     @ExceptionHandler(UserExistException.class)
     protected ResponseEntity<?> handleUserExistException() {
         log.error("User with this email or phone already exists");
-        ApiError apiError = new ApiError(new Error(
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 409, ErrorMessages.USER_EXIST.text()));
-        return ResponseEntity.status(409).body(apiError);
+        return ResponseEntity.status(409).body(responseApiError);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<?> handleBadCredentialException(BadCredentialsException e) {
         log.error("Bad credentials: " + e.getMessage());
-        ApiError apiError = new ApiError(
-                new Error(409, ErrorMessages.INCORRECT_LOGIN_DATA.text()));
-        return ResponseEntity.status(409).body(apiError);
+        ResponseApiError responseApiError = new ResponseApiError(
+                new ErrorDetails(409, ErrorMessages.INCORRECT_LOGIN_DATA.text()));
+        return ResponseEntity.status(409).body(responseApiError);
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    protected ResponseEntity<?> handleBadCredentialException(AuthenticationException e) {
+    protected ResponseEntity<?> handleAuthenticationException(AuthenticationException e) {
         log.error("Authentication failed: " + e.getMessage());
-        ApiError apiError = new ApiError(new Error(
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 409, ErrorMessages.INCORRECT_LOGIN_DATA.text()));
-        return ResponseEntity.status(409).body(apiError);
+        return ResponseEntity.status(409).body(responseApiError);
     }
 
 
