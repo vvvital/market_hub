@@ -1,7 +1,6 @@
 package com.teamchallenge.markethub.error;
 
-import com.teamchallenge.markethub.error.exception.UserExistException;
-import com.teamchallenge.markethub.error.exception.UserNotFoundException;
+import com.teamchallenge.markethub.error.exception.*;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
@@ -41,8 +40,8 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<?> handleIOException(IOException e) {
         log.error("{}", e.getMessage());
         ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
-                422, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(422).body(responseApiError);
+                500, ErrorMessages.MAIL_FAIL.text()));
+        return ResponseEntity.status(500).body(responseApiError);
     }
 
     @ExceptionHandler(TemplateException.class)
@@ -83,6 +82,30 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
         ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
                 409, ErrorMessages.INCORRECT_LOGIN_DATA.text()));
         return ResponseEntity.status(409).body(responseApiError);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    protected ResponseEntity<?> handleCategoryNotFoundException(CategoryNotFoundException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                404, ErrorMessages.CATEGORY_NOT_FOUND.text()));
+        return ResponseEntity.status(404).body(responseApiError);
+    }
+
+    @ExceptionHandler(SubCategoryNotFoundException.class)
+    protected ResponseEntity<?> handleSubCategoryNotFoundException(SubCategoryNotFoundException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                404, ErrorMessages.SUB_CATEGORY_NOT_FOUND.text()));
+        return ResponseEntity.status(404).body(responseApiError);
+    }
+
+    @ExceptionHandler(ItemNotFoundException.class)
+    protected ResponseEntity<?> handleItemNotFoundException(ItemNotFoundException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                404, ErrorMessages.ITEM_NOT_FOUND.text()));
+        return ResponseEntity.status(404).body(responseApiError);
     }
 
 

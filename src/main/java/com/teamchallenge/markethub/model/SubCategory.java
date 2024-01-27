@@ -33,6 +33,9 @@ public class SubCategory {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "photo_preview")
+    private String photo;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

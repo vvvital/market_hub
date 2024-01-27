@@ -35,6 +35,11 @@ public class SecurityConfig {
     private final String[] postHttpRequests = new String[] {"/markethub/authorization",
             "/markethub/login","markethub/users/reset_password","markethub/users/{id}/change_password"};
 
+    private final String[] getHttpRequest = new String[] {"/markethub/del/{id}", "/markethub/all",
+            "markethub/users/{id}/change_password", "/markethub/categories", "/markethub/categories/{category_id}",
+            "/markethub/categories/{category_id}/sub-categories", "/markethub/categories/{category_id}/{filename}",
+            "/markethub/goods/top-seller", "/markethub/goods/shares"};
+
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
         this.userService = userService;
         this.authEntryPointJwt = authEntryPointJwt;
@@ -47,8 +52,7 @@ public class SecurityConfig {
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, postHttpRequests).permitAll()
-                        .requestMatchers("/markethub/del/{id}", "/markethub/all",
-                                "markethub/users/{id}/change_password").permitAll() // debug
+                        .requestMatchers(getHttpRequest).permitAll() // debug
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
