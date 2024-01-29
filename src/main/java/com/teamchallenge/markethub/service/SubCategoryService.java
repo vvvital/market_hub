@@ -1,12 +1,9 @@
 package com.teamchallenge.markethub.service;
 
-import com.teamchallenge.markethub.error.exception.SubCategoryNotFoundException;
-import com.teamchallenge.markethub.model.SubCategory;
+import com.teamchallenge.markethub.dto.category.sub_category.SubCategoryResponse;
 
 import java.util.List;
 
 public interface SubCategoryService {
-    List<SubCategory> findAllSubCategoriesByParent(Long parentId);
-
-    SubCategory findSubCategoryById(Long id) throws SubCategoryNotFoundException;
+    List<SubCategoryResponse> findAllSubCategoriesByParent(Long parentId);
 }

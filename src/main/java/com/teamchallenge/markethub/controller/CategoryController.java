@@ -6,8 +6,6 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.teamchallenge.markethub.dto.category.CategoryResponse;
 import com.teamchallenge.markethub.dto.category.sub_category.SubCategoryResponse;
 import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
-import com.teamchallenge.markethub.model.Category;
-import com.teamchallenge.markethub.model.SubCategory;
 import com.teamchallenge.markethub.service.impl.CategoryServiceImpl;
 import com.teamchallenge.markethub.service.impl.SubCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -43,25 +40,19 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        List<Category> categories = categoryService.findAllCategories();
-        List<CategoryResponse> categoryResponseList = categories.stream()
-                .map(CategoryResponse::convertToCategoryResponse)
-                .collect(Collectors.toList());
+        List<CategoryResponse> categoryResponseList = categoryService.findAllCategories();
         return ResponseEntity.status(200).body(categoryResponseList);
     }
 
     @GetMapping("/{category_id}")
     public ResponseEntity<CategoryResponse> getCategory(@PathVariable(name = "category_id") Long id) throws CategoryNotFoundException {
-        Category category = categoryService.findCategoryById(id);
-        return ResponseEntity.status(200).body(CategoryResponse.convertToCategoryResponse(category));
+        CategoryResponse category = categoryService.findCategoryById(id);
+        return ResponseEntity.status(200).body(category);
     }
 
     @GetMapping("/{category_id}/sub-categories")
     public ResponseEntity<List<SubCategoryResponse>> getAllSubCategories(@PathVariable(name = "category_id") Long parentId) {
-        List<SubCategory> subCategories = subCategoryService.findAllSubCategoriesByParent(parentId);
-        List<SubCategoryResponse> subCategoryResponseList = subCategories.stream()
-                .map(SubCategoryResponse::convertToSubCategoryResponse)
-                .toList();
+        List<SubCategoryResponse> subCategoryResponseList = subCategoryService.findAllSubCategoriesByParent(parentId);
         return ResponseEntity.status(200).body(subCategoryResponseList);
     }
 
@@ -69,7 +60,6 @@ public class CategoryController {
     @GetMapping("/{category_id}/{filename}")
     public ResponseEntity<byte[]> getPhotoPreview(@PathVariable(name = "category_id") String path, @PathVariable(name = "filename") String filename) {
         String bucketFilePath = "categories/" + path + "/" + filename;
-
         try (S3Object s3Object = s3Client.getObject(bucketName, bucketFilePath);
              S3ObjectInputStream objectInputStream = s3Object.getObjectContent()) {
 
@@ -77,17 +67,9 @@ public class CategoryController {
             headers.setContentType(MediaType.IMAGE_JPEG);
 
             InputStreamResource inputStreamResource = new InputStreamResource(objectInputStream);
-
             return ResponseEntity.status(200).headers(headers).body(inputStreamResource.getContentAsByteArray());
-
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
         }
     }
-
-    //todo: create method for return photo_preview
-    //todo: create item controller
-    //todo: create method top_sold and shares
-    //todo: make refactoring category and sub_category service
-
 }

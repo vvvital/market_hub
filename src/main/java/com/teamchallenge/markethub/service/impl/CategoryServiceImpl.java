@@ -1,5 +1,6 @@
 package com.teamchallenge.markethub.service.impl;
 
+import com.teamchallenge.markethub.dto.category.CategoryResponse;
 import com.teamchallenge.markethub.error.ErrorMessages;
 import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
 import com.teamchallenge.markethub.model.Category;
@@ -18,13 +19,17 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> findAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponse> findAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(CategoryResponse::convertToCategoryResponse)
+                .toList();
     }
 
     @Override
-    public Category findCategoryById(Long id) throws CategoryNotFoundException {
+    public CategoryResponse findCategoryById(Long id) throws CategoryNotFoundException {
         Optional<Category> category = categoryRepository.findById(id);
-        return category.orElseThrow(() -> new CategoryNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND.text()));
+        return CategoryResponse.convertToCategoryResponse(category.orElseThrow(
+                () -> new CategoryNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND.text())));
     }
 }

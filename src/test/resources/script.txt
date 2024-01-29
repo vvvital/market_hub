@@ -1,0 +1,41 @@
+INSERT INTO users(firstname, lastname, email, phone, password, registration_date, role)
+VALUES ('Bilbo', 'Bagging', 'bilbo@gmail.com', '380991816245', 'pass123','2024-01-26 12:12:0', 'SELLER'),
+       ('Tomas', 'Shelby', 'tomas@gmail.com', '380991717245', 'pass123','2024-01-26 12:12:0', 'SELLER'),
+       ('Gojo', 'Satoru', 'gojo@gmail.com', '380992836845', 'pass123','2024-01-26 12:12:0', 'SELLER');
+
+
+INSERT INTO categories(id,name,photo_preview) VALUES (100,'Комп’ютерна техніка', 'localhost:8080/markethub/categories/100/100.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (175, 'Мобільні телефони', 'localhost:8080/markethub/categories/175/175.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (250, 'Побутова техніка', 'localhost:8080/markethub/categories/250/250.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (325, 'Ігрові приставки', 'localhost:8080/markethub/categories/325/325.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (400, 'Аудіотехніка', 'localhost:8080/markethub/categories/400/400.png');
+
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (100, 'Ноутбуки', 'localhost:8080/markethub/categories/100/110.png', 100);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (160, 'Настільні комп’ютери', 'localhost:8080/markethub/categories/100/160.png', 100);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (220, 'Планшети', 'localhost:8080/markethub/categories/100/220.png', 100);
+
+INSERT INTO sub_categories(id,name,category_id) VALUES (340, 'Смартфони', 175);
+INSERT INTO sub_categories(id,name,category_id) VALUES (400, 'Розумні годинники', 175);
+INSERT INTO sub_categories(id,name,category_id) VALUES (460, 'Аксесуари', 175);
+
+INSERT INTO sub_categories(id,name,category_id) VALUES (520, 'Дрібна', 250);
+INSERT INTO sub_categories(id,name,category_id) VALUES (580, 'Велика', 250);
+INSERT INTO sub_categories(id,name,category_id) VALUES (640, 'Кліматична', 250);
+
+INSERT INTO sub_categories(id,name,category_id) VALUES (700, 'Приставки', 325);
+INSERT INTO sub_categories(id,name,category_id) VALUES (760, 'Джойстики', 325);
+INSERT INTO sub_categories(id,name,category_id) VALUES (820, 'Комплектуючі', 325);
+
+INSERT INTO sub_categories(id,name,category_id) VALUES (880, 'Навушники', 400);
+INSERT INTO sub_categories(id,name,category_id) VALUES (940, 'Акустичні системи', 400);
+INSERT INTO sub_categories(id,name,category_id) VALUES (1000, 'Медіаплеєри', 400);
+
+INSERT INTO goods(id, name, price, create_at, article, available, stock_quantity, category_id, sub_category_id, photo_preview, sold, description, brand, seller_id)
+VALUES  (100, 'Ноутбук LENOVO IdeaPad 3', 29999, '2024-01-26 12:12:0', '2134321', true, 25, 100, 100, 'localhost:8080/markethub/categories/100/1000.png', 18, 'none', null, 1),
+        (128, 'Ноутбук Asus Vivobook 15', 17499, '2024-01-26 13:12:0', '6586223', false, 0, 100, 100, 'localhost:8080/markethub/categories/100/1132.png', 25, 'none', null, 1),
+        (153, 'Ігрова приставка Play Station 5', 23499, '2024-01-26 13:49:0', '4524662', true, 5, 325, 700, 'localhost:8080/markethub/categories/325/1264.png', 67, 'none', null, 2),
+        (178, 'Холодильник Samsung RB34C675DSA', 24799, '2024-01-26 12:47:0', '4781662', true, 9, 250, 580, 'localhost:8080/markethub/categories/250/1395.png', 12, 'none', null, 3),
+        (203, 'Смартфон APPLE iPhone 13 128GB', 29999, '2024-01-26 12:47:0', '4781652', true, 12, 175, 340, 'localhost:8080/markethub/categories/175/1923.png', 8, 'none', null, 1),
+        (228, 'Навушники PANASONIC RB-HX220BEE-K', 17499, '2024-01-26 12:47:0', '35636', true, 2, 400, 880, 'localhost:8080/markethub/categories/400/1659.png', 23, 'none', null, 2),
+        (253, 'Міксер TEFAL Prep’Mix HT450B38', 23499, '2024-01-26 12:47:0', '086403', true, 27, 250, 520, 'localhost:8080/markethub/categories/250/1527.png', 9, 'none', null, 3),
+        (278, 'Обігрівач WetAit WQH-2020', 17499, '2024-01-26 12:47:0', '224426', true, 11, 250, 640, 'localhost:8080/markethub/categories/250/1791.png', 3, 'none', null, 3);
