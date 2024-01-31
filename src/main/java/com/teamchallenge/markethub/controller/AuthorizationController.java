@@ -42,8 +42,6 @@ public class AuthorizationController {
     private final JwtUtils jwtUtils;
     private final EmailSender emailSender;
 
-    //todo: change name 'convertToNewSeller', 'convertToUserResponse'
-
     @PostMapping("/authorization")
     public ResponseEntity<?> createNewSellerAndAuthenticationAndSendMail(@RequestBody @Valid AuthorizationRequest authRequest,
                                                                          UriComponentsBuilder uri) throws UserExistException {
