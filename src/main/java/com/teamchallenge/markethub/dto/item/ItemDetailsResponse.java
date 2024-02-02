@@ -1,19 +1,22 @@
 package com.teamchallenge.markethub.dto.item;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.teamchallenge.markethub.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ItemDetailResponse(
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record ItemDetailsResponse(
         long id, String name, BigDecimal price, String article, String description, String brand, String photoPreview,
         List<Photo> photo,
         Boolean available, LocalDateTime createAt, CategoryDetails categoryDetails,
         SubCategoryDetails subCategoryDetails, SellerDetails sellerDetails) {
 
-    public static ItemDetailResponse convertToItemDetailsResponse(Item item, Category category, SubCategory subCategory, User seller) {
-        return new ItemDetailResponse(
+    public static ItemDetailsResponse convertToItemDetailsResponse(Item item, Category category, SubCategory subCategory, User seller) {
+        return new ItemDetailsResponse(
                 item.getId(), item.getName(), item.getPrice(), item.getArticle(), item.getDescription(),
                 item.getBrand(), item.getPhotoPreview(), item.getPhoto(), item.isAvailable(), item.getCreateAt(),
                 createCategoryDetails(category), createSubCategoryDetails(subCategory), createSellerDetails(seller)

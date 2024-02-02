@@ -1,6 +1,6 @@
 package com.teamchallenge.markethub.controller;
 
-import com.teamchallenge.markethub.dto.item.ItemDetailResponse;
+import com.teamchallenge.markethub.dto.item.ItemDetailsResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.service.impl.ItemServiceImpl;
@@ -39,7 +39,7 @@ public class ItemController {
     }
 
     @GetMapping("/{item_id}")
-    public ResponseEntity<ItemDetailResponse> getItem(@PathVariable(name = "item_id") long itemId) throws ItemNotFoundException {
+    public ResponseEntity<ItemDetailsResponse> getItem(@PathVariable(name = "item_id") long itemId) throws ItemNotFoundException {
         return ResponseEntity.status(200).body(itemService.findItemById(itemId));
     }
 
