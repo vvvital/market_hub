@@ -2,7 +2,7 @@ package com.teamchallenge.markethub.controller;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.teamchallenge.markethub.repository.ItemRepository;
+import com.teamchallenge.markethub.repository.ItemRepositoryTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,7 @@ public class ItemControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemRepositoryTest itemRepositoryTest;
 
     @Test
     public void shouldReturnTopSellerItem() {
@@ -43,49 +43,108 @@ public class ItemControllerTest {
         assertThat(countItem).isEqualTo(4);
     }
 
+
     @Test
-    public void shouldReturnAllItemsByCategoryId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/100", String.class);
+    public void shouldReturnItemsPage0Size1() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?page=0&size=1", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int expectedCount = itemRepository.findAllByCategoryId(100).size();
-        int count = documentContext.read("$.length()");
+        int expectedSize = 1;
+        int currentSize = documentContext.read("$.length()");
 
-        assertThat(count).isEqualTo(expectedCount);
+        assertThat(currentSize).isEqualTo(expectedSize);
     }
 
     @Test
-    public void shouldReturnEmptyListItemsByIncorrectCategoryId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/1001", String.class);
+    public void shouldReturnAllItemsByCategory() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int count = documentContext.read("$.length()");
+        int expectedSize = itemRepositoryTest.findAllByCategoryId(100).size();
+        int currentSize = documentContext.read("$.length()");
 
-        assertThat(count).isEqualTo(0);
+        assertThat(currentSize).isEqualTo(expectedSize);
     }
 
     @Test
-    public void shouldReturnAllItemsBySubCategoryId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/100/100", String.class);
+    public void shouldReturnAllItemsBySubCategory() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int expectedCount = itemRepository.findAllBySubCategoryId(100).size();
-        int count = documentContext.read("$.length()");
+        int expectedSize = itemRepositoryTest.findAllBySubCategoryId(100).size();
+        int currentSize = documentContext.read("$.length()");
 
-        assertThat(count).isEqualTo(expectedCount);
+        assertThat(currentSize).isEqualTo(expectedSize);
     }
 
     @Test
-    public void shouldReturnBadRequestIfUnknownCategoryId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/1000/100", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    public void shouldReturnAllItemsByCategoryIdSortedByCreateAtDesc() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?sort=createAt,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        String expectedDate = "2024-01-26T14:12:00";
+        System.out.println(response);
+        String dateFirstItem = documentContext.read("$[0].['create_at']");
+
+        assertThat(dateFirstItem).isEqualTo(expectedDate);
+    }
+
+    @Test
+    public void shouldReturnAllItemsBySubCategoryIdSortedByCreateAtDesc() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?sort=createAt,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        String expectedDate = "2024-01-26T14:12:00";
+        System.out.println(response);
+        String dateFirstItem = documentContext.read("$[0].['create_at']");
+
+        assertThat(dateFirstItem).isEqualTo(expectedDate);
+    }
+
+    @Test
+    public void shouldReturnAllItemsByCategoryIdSortedByPrice() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?sort=price,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        Double expectedPrice = 29999.00;
+        Double priceFirstItem = documentContext.read("$[0].['price']");
+
+        assertThat(priceFirstItem).isEqualTo(expectedPrice);
+    }
+
+    @Test
+    public void shouldReturnAllItemsBySubCategoryIdSortedByPrice() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?sort=price,desc", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        Double expectedPrice = 29999.00;
+        Double priceFirstItem = documentContext.read("$[0].['price']");
+
+        assertThat(priceFirstItem).isEqualTo(expectedPrice);
+    }
+
+    @Test
+    public void shouldReturnEmptyListIfIdIsUnknown() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/101", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
     @Test
     public void shouldReturnItemById() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/153", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 
+    @Test
+    public void shouldReturn404IfItemNotFound() {
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/154", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.repository.cdi.Eager;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -65,7 +67,7 @@ public class Item {
     @Column(name = "photo_preview")
     private String photoPreview;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     private List<Photo> photo;
 
     @Column(name = "sold")
@@ -79,18 +81,18 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
-    private User sellerId;
+    private User seller;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return Objects.equals(name, item.name) && Objects.equals(article, item.article) && Objects.equals(category, item.category) && Objects.equals(subCategory, item.subCategory) && Objects.equals(sellerId, item.sellerId);
+        return Objects.equals(name, item.name) && Objects.equals(article, item.article) && Objects.equals(category, item.category) && Objects.equals(subCategory, item.subCategory) && Objects.equals(seller, item.seller);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, article, category, subCategory, sellerId);
+        return Objects.hash(name, article, category, subCategory, seller);
     }
 }

@@ -38,8 +38,8 @@ public class SecurityConfig {
     private final String[] getHttpRequest = new String[] {"/markethub/del/{id}", "/markethub/all",
             "markethub/users/{id}/change_password", "/markethub/categories", "/markethub/categories/{category_id}",
             "/markethub/categories/{category_id}/sub-categories", "/markethub/categories/{category_id}/{filename}",
-            "/markethub/goods/top-seller", "/markethub/goods/shares", "/markethub/goods/{category_id}",
-            "/markethub/goods/{category_id}/{sub_category_id}"};
+            "/markethub/goods/top-seller", "/markethub/goods/shares", "/markethub/goods/categories/{category_id}",
+            "/markethub/goods/sub-categories/{sub_category_id}","/markethub/goods/{item_id}", "/v3/api-docs"};
 
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
         this.userService = userService;

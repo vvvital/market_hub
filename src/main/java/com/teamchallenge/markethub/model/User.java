@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @OneToMany(mappedBy = "sellerId")
+    @OneToMany(mappedBy = "seller")
     private List<Item> items;
 
     public User(String firstname, String lastname, String email, String phone, String password) {
