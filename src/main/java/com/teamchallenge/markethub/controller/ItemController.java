@@ -33,7 +33,7 @@ public class ItemController {
             @RequestParam(name = "brand", required = false, defaultValue = EMPTY) String brand) {
         ItemRequestParams params = new ItemRequestParams(priceFrom, priceTo, available, brand);
         List<ItemDetails> filteredItemList = ItemFilter.toFilter(getItemsByCategoryId(categoryId, pageable), params);
-        int size = itemService.getCountItemsBySubCategoryId(categoryId);
+        int size = itemService.getCountItemsByCategoryId(categoryId);
         return ResponseEntity.ok(new ItemResponse(size, filteredItemList));
     }
 
