@@ -43,7 +43,7 @@ public class UserController {
         User seller = userService.findByEmail(emailRequest.email());
         String fullName = seller.getFirstname() + " " + seller.getLastname();
         Map<String,Object> params = new HashMap<>();
-        params.put("name",fullName);
+        params.put("name", fullName);
         emailSender.sendMail(emailRequest.email(), params, CustomTemplates.PASSWORD_CHANGE_TEMPLATE);
         EmailResponse response = new EmailResponse("success", 200);
         return ResponseEntity.ok(response);

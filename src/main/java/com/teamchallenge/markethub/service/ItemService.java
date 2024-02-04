@@ -1,7 +1,7 @@
 package com.teamchallenge.markethub.service;
 
 import com.teamchallenge.markethub.dto.item.ItemDetailsResponse;
-import com.teamchallenge.markethub.dto.item.ItemResponse;
+import com.teamchallenge.markethub.dto.item.detail.ItemDetails;
 import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.error.exception.SubCategoryNotFoundException;
@@ -13,9 +13,12 @@ import java.util.List;
 public interface ItemService {
     ItemDetailsResponse findItemById(long id) throws ItemNotFoundException, UserNotFoundException, CategoryNotFoundException, SubCategoryNotFoundException;
 
-    List<ItemResponse> getAllItemByCategoryId(long categoryId, Pageable pageable);
+    List<ItemDetails> getAllItemByCategoryId(long categoryId, Pageable pageable);
 
-    List<ItemResponse> getAllItemBySubCategoryId(long subCategoryId, Pageable pageable);
+    List<ItemDetails> getAllItemBySubCategoryId(long subCategoryId, Pageable pageable);
 
-    ItemResponse findItem(long id);
+    ItemDetails findItem(long id);
+
+    int getCountItemsByCategoryId(long categoryId);
+    int getCountItemsBySubCategoryId(long subCategoryId);
 }
