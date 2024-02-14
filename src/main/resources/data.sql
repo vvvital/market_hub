@@ -46,8 +46,8 @@ VALUES  (100, 'Ноутбук LENOVO IdeaPad 3', 29999, '2024-01-26 12:12:0', '2
         (553, 'Планшет Apple iPad 10.9" 2022', 22499, '2024-02-03 14:11:12', '357715', true, 9, 100, 220, 'localhost:8080/markethub/categories/100/3243.png', 10, 'none', 'Apple', 3),
         (575, 'Планшет Samsung Galaxy Tab A9', 5849, '2024-02-04 11:12:05', '412056', true, 21, 100, 220, 'localhost:8080/markethub/categories/100/3375.png', 11, 'none', 'Samsung', 3),
         (600, 'Планшет Apple iPad Air 10.9', 29499, '2024-02-03 19:12:01', '337933', true, 7, 100, 220, 'localhost:8080/markethub/categories/100/3507.png', 3, 'none', 'Apple', 3),
-        (625, 'Планшет Lenovo Tab M10 Plus', 9499, '2024-02-03 20:14:21', '350837', true, 12,100,220,'localhost:8080/markethub/categories/100/-.png', 12, 'none','Lenovo',3),
-        (650, 'Планшет Lenovo Yoga Tab 11',15999,'2024-02-03 20:12:11', '350838', true, 23,100,220,'localhost:8080/markethub/categories/100/-.png', 12, 'none','-',3),
-        (675, 'Планшет Samsung Galaxy Tab A7 Lite',4999,'2024-02-01 11:12:28', '350839', true, 24,100,220,'localhost:8080/markethub/categories/100/-.png', 9, 'none','-',3),
-        (700, 'Планшет Pixus Titan',6999,'2024-02-01 10:24:21', '350840', true, 11,100,220,'localhost:8080/markethub/categories/100/-.png', 4, 'none','-',3),
-        (725, '2024-02-02 09:41:53', '350841', false, 0,100,220,'localhost:8080/markethub/categories/100/-.png', 17, 'none','-',1)
+        (625, 'Планшет Lenovo Tab M10 Plus', 9499, '2024-02-03 20:14:21', '350837', true, 12,100,220,'localhost:8080/markethub/categories/100/3639.png', 12, 'none','Lenovo',3),
+        (650, 'Планшет Lenovo Yoga Tab 11',15999,'2024-02-03 20:12:11', '350838', true, 23,100,220,'localhost:8080/markethub/categories/100/3771.png', 12, 'none','Lenovo',3),
+        (675, 'Планшет Samsung Galaxy Tab A7 Lite',4999,'2024-02-01 11:12:28', '350839', true, 24,100,220,'localhost:8080/markethub/categories/100/3903.png', 9, 'none','Samsung',3),
+        (700, 'Планшет Pixus Titan',6999,'2024-02-01 10:24:21', '350840', true, 11,100,220,'localhost:8080/markethub/categories/100/4035.png', 4, 'none','Pixus',3),
+        (725, 'Планшет Oscal Spider',9850,'2024-02-02 09:41:53', '350841', false, 0,100,220,'localhost:8080/markethub/categories/100/4167.png', 17, 'none','Oscal',1);

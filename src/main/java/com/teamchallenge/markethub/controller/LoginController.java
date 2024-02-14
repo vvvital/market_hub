@@ -4,6 +4,7 @@ import com.teamchallenge.markethub.config.jwt.JwtUtils;
 import com.teamchallenge.markethub.dto.login.LoginRequest;
 import com.teamchallenge.markethub.dto.login.LoginResponse;
 import com.teamchallenge.markethub.service.impl.UserServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/markethub")
 public class LoginController {
@@ -18,21 +20,27 @@ public class LoginController {
     private final JwtUtils jwtUtils;
     private final UserServiceImpl userService;
 
-    public LoginController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserServiceImpl userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtils = jwtUtils;
-        this.userService = userService;
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        User userDetails = (User) userAuthenticate(loginRequest).getPrincipal();
+        return ResponseEntity.ok().body(loginResponse(getUser(userDetails), token(userDetails)));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginSeller(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new
+    private Authentication userAuthenticate(LoginRequest loginRequest) {
+        return authenticationManager.authenticate(new
                 UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
-        User userDetails = (User) authentication.getPrincipal();
-        String jwtToken = jwtUtils.generateTokenFromEmail(userDetails.getUsername());
-        com.teamchallenge.markethub.model.User user = userService.findByEmail(userDetails.getUsername());
-        String username = user.getFirstname() + " " + user.getLastname();
-        LoginResponse response = new LoginResponse(200, user.getId(), username, jwtToken);
-        return ResponseEntity.ok().body(response);
+    }
+
+    private com.teamchallenge.markethub.model.User getUser(User userDetails) {
+        return userService.findByEmail(userDetails.getUsername());
+    }
+
+    private String token(User userDetails) {
+        return jwtUtils.generateTokenFromEmail(userDetails.getUsername());
+    }
+
+    private static LoginResponse loginResponse(com.teamchallenge.markethub.model.User user, String jwtToken) {
+        return new LoginResponse(200, user.getId(), user.getFirstname(),
+                user.getLastname(), user.getEmail(), user.getPhone(), jwtToken);
     }
 }

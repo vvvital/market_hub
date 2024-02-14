@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @AllArgsConstructor
 @RestController
@@ -31,9 +33,9 @@ public class ItemController {
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
             @RequestParam(name = "available", required = false, defaultValue = EMPTY) String available,
             @RequestParam(name = "brand", required = false, defaultValue = EMPTY) String brand) {
-        ItemRequestParams params = new ItemRequestParams(priceFrom, priceTo, available, brand);
-        List<ItemDetails> filteredItemList = ItemFilter.toFilter(getItemsByCategoryId(categoryId, pageable), params);
-        int size = itemService.getCountItemsByCategoryId(categoryId);
+        List<ItemDetails> filteredItemList = getFilter(itemService::getAllItemByCategoryId,
+                categoryId, pageable, getRequestParams(priceFrom, priceTo, available, brand));
+        int size = getCountItemsById(itemService::getCountItemsByCategoryId, categoryId);
         return ResponseEntity.ok(new ItemResponse(size, filteredItemList));
     }
 
@@ -44,18 +46,22 @@ public class ItemController {
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
             @RequestParam(name = "available", required = false, defaultValue = EMPTY) String available,
             @RequestParam(name = "brand", required = false, defaultValue = EMPTY) String brand) {
-        ItemRequestParams params = new ItemRequestParams (priceFrom, priceTo, available, brand);
-        List<ItemDetails> filteredItemList = ItemFilter.toFilter(getItemsBySubCategoryId(subCategoryId, pageable), params);
-        int size = itemService.getCountItemsBySubCategoryId(subCategoryId);
+        List<ItemDetails> filteredItemList = getFilter(itemService::getAllItemBySubCategoryId,
+                subCategoryId, pageable, getRequestParams(priceFrom, priceTo, available, brand));
+        int size = getCountItemsById(itemService::getCountItemsBySubCategoryId, subCategoryId);
         return ResponseEntity.ok(new ItemResponse(size, filteredItemList));
     }
 
-    private List<ItemDetails> getItemsByCategoryId(long categoryId, Pageable pageable) {
-        return itemService.getAllItemByCategoryId(categoryId, pageable);
+    private static ItemRequestParams getRequestParams(double priceFrom, double priceTo, String available, String brand) {
+        return new ItemRequestParams(priceFrom, priceTo, available, brand);
     }
 
-    private List<ItemDetails> getItemsBySubCategoryId(long subCategoryId, Pageable pageable) {
-        return itemService.getAllItemBySubCategoryId(subCategoryId, pageable);
+    private int getCountItemsById(Function<Long, Integer> function, long id) {
+        return function.apply(id);
+    }
+    private List<ItemDetails> getFilter(BiFunction<Long,Pageable, List<ItemDetails>> function, long id, Pageable pageable, ItemRequestParams params) {
+        List<ItemDetails> list = function.apply(id, pageable);
+        return ItemFilter.toFilter(list, params);
     }
 
     @GetMapping("/{item_id}")

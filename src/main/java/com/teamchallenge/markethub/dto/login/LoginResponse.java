@@ -1,4 +1,9 @@
 package com.teamchallenge.markethub.dto.login;
 
-public record LoginResponse(int code, Integer id, String username, String token) {
-}
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record LoginResponse(int code, Integer id, String firstname, String lastname, String email,
+        String phone, String token){}
+
