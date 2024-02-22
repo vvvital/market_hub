@@ -32,7 +32,7 @@ public class ItemController {
             @RequestParam(name = "price_from", required = false, defaultValue = MIN_VALUE) double priceFrom,
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
             @RequestParam(name = "available", required = false, defaultValue = EMPTY) String available,
-            @RequestParam(name = "brand", required = false, defaultValue = EMPTY) String brand) {
+            @RequestParam(name = "brand", required = false, defaultValue = EMPTY) List<String> brand) {
         List<ItemDetails> filteredItemList = getFilter(itemService::getAllItemByCategoryId,
                 categoryId, pageable, getRequestParams(priceFrom, priceTo, available, brand));
         int size = getCountItemsById(itemService::getCountItemsByCategoryId, categoryId);
@@ -45,21 +45,22 @@ public class ItemController {
             @RequestParam(name = "price_from", required = false, defaultValue = MIN_VALUE) double priceFrom,
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
             @RequestParam(name = "available", required = false, defaultValue = EMPTY) String available,
-            @RequestParam(name = "brand", required = false, defaultValue = EMPTY) String brand) {
+            @RequestParam(name = "brand", required = false, defaultValue = EMPTY) List<String> brand) {
         List<ItemDetails> filteredItemList = getFilter(itemService::getAllItemBySubCategoryId,
                 subCategoryId, pageable, getRequestParams(priceFrom, priceTo, available, brand));
         int size = getCountItemsById(itemService::getCountItemsBySubCategoryId, subCategoryId);
         return ResponseEntity.ok(new ItemResponse(size, filteredItemList));
     }
 
-    private static ItemRequestParams getRequestParams(double priceFrom, double priceTo, String available, String brand) {
+    private static ItemRequestParams getRequestParams(double priceFrom, double priceTo, String available, List<String> brand) {
         return new ItemRequestParams(priceFrom, priceTo, available, brand);
     }
 
     private int getCountItemsById(Function<Long, Integer> function, long id) {
         return function.apply(id);
     }
-    private List<ItemDetails> getFilter(BiFunction<Long,Pageable, List<ItemDetails>> function, long id, Pageable pageable, ItemRequestParams params) {
+
+    private List<ItemDetails> getFilter(BiFunction<Long, Pageable, List<ItemDetails>> function, long id, Pageable pageable, ItemRequestParams params) {
         List<ItemDetails> list = function.apply(id, pageable);
         return ItemFilter.toFilter(list, params);
     }

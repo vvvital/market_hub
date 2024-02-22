@@ -16,8 +16,15 @@ public class ItemFilter {
                 .toList();
     }
 
-    private static Predicate<? super ItemDetails> checkBrand(String brand) {
-        return (item) -> Objects.equals(brand, "empty") || Objects.equals(brand, item.getBrand());
+    private static Predicate<? super ItemDetails> checkBrand(List<String> brands) {
+        return (item) -> {
+            for (String brand : brands) {
+                if (Objects.equals(brand, "empty") || Objects.equals(brand, item.getBrand())) {
+                    return true;
+                }
+            }
+            return false;
+        };
     }
 
     private static Predicate<? super ItemDetails> checkAvailable(String available) {
