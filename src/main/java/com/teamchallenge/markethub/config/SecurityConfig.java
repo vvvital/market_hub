@@ -32,14 +32,14 @@ public class SecurityConfig {
     private final AuthEntryPointJwt authEntryPointJwt;
     private final JwtUtils jwtUtils;
 
-    private final String[] postHttpRequests = new String[] {"/markethub/authorization",
-            "/markethub/login","markethub/users/reset_password","markethub/users/{id}/change_password"};
+    private final String[] postHttpRequests = new String[]{"/markethub/authorization",
+            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password"};
 
-    private final String[] getHttpRequest = new String[] {"/markethub/del/{id}", "/markethub/all",
+    private final String[] getHttpRequest = new String[]{"/markethub/del/{id}", "/markethub/all",
             "markethub/users/{id}/change_password", "/markethub/categories", "/markethub/categories/{category_id}",
             "/markethub/categories/{category_id}/sub-categories", "/markethub/categories/{category_id}/{filename}",
             "/markethub/goods/top-seller", "/markethub/goods/shares", "/markethub/goods/categories/{category_id}",
-            "/markethub/goods/sub-categories/{sub_category_id}","/markethub/goods/{item_id}", "/v3/api-docs"};
+            "/markethub/goods/sub-categories/{sub_category_id}", "/markethub/goods/{item_id}", "/v3/api-docs"};
 
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
         this.userService = userService;
@@ -64,7 +64,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter(jwtUtils,userService);
+        return new AuthTokenFilter(jwtUtils, userService);
     }
 
     @Bean
@@ -72,7 +72,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://market-hub-oleksandrs-projects-fa78f5ab.vercel.app",
                 "http://localhost:3000", "https://market-hub-sigma.vercel.app"));
-        configuration.setAllowedMethods(List.of("GET", "POST","PUT","DELETE"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);

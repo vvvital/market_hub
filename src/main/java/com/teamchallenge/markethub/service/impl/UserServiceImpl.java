@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public void remove(Integer id) throws UserNotFoundException {
+    public void remove(Integer id) {
         Optional<User> user = userRepository.findById(id);
         userRepository.delete(user.orElseThrow(() ->
                 new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.text())));
@@ -54,16 +54,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean findByEmailAndPhone(String email, String phone) throws UserExistException {
-        User user = userRepository.findByEmailOrPhone(email, phone);
-        if (user != null) {
-            throw new UserExistException();
-        }
-        return false;
+    public boolean existByEmailAndPhone(String email, String phone) {
+        return userRepository.existsUserByEmailOrPhone(email, phone);
     }
 
     @Override
-    public User findById(Integer id) throws UserNotFoundException {
+    public User findById(Integer id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.text()));
     }
@@ -75,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findByEmail(email);
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }

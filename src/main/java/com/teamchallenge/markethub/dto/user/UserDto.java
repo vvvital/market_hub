@@ -2,7 +2,7 @@ package com.teamchallenge.markethub.dto.user;
 
 import com.teamchallenge.markethub.dto.authorization.AuthorizationRequest;
 import com.teamchallenge.markethub.model.User;
-import com.teamchallenge.markethub.model.role.Role.java.Role;
+import com.teamchallenge.markethub.model.enums.Role;
 
 import java.time.LocalDateTime;
 

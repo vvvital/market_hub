@@ -43,16 +43,18 @@ public class AuthorizationController {
     private final EmailSender emailSender;
 
     @PostMapping("/authorization")
-    public ResponseEntity<?> createNewSellerAndAuthenticationAndSendMail(@RequestBody @Valid AuthorizationRequest authRequest,
-                                                                         UriComponentsBuilder uri) throws UserExistException {
+    public ResponseEntity<?> createNewUserAndAuthenticationAndSendMail(@RequestBody @Valid AuthorizationRequest authRequest,
+                                                                       UriComponentsBuilder uri) {
         checkUserExist(authRequest.email(), authRequest.phone());
-        User newSeller = userService.create(UserDto.convertToNewSeller(authRequest));
-        URI locationOfNewUser = createUserLocation(uri, newSeller);
-        String jwtToken = userAuthenticationAndGenerateToken(authRequest.email(), authRequest.password());
-        String username = newSeller.getFirstname() + " " + newSeller.getLastname();
-        AuthorizationResponse response = new AuthorizationResponse(201, username, jwtToken);
+        User newUser = userService.create(UserDto.convertToNewSeller(authRequest));
+        String username = newUser.getFirstname() + " " + newUser.getLastname();
         sendEmail(authRequest.email(), authRequest.firstname(), authRequest.lastname());
-        return ResponseEntity.created(locationOfNewUser).body(response);
+        return ResponseEntity.created(createUserLocation(uri, newUser))
+                .body(new AuthorizationResponse(
+                        201,
+                        username,
+                        generateToken(authRequest.email(), authRequest.password()))
+                );
     }
 
     private URI createUserLocation(UriComponentsBuilder uri, User savedSeller) {
@@ -62,8 +64,8 @@ public class AuthorizationController {
                 .toUri();
     }
 
-    private void checkUserExist(String email, String phone) throws UserExistException {
-        if (userService.findByEmailAndPhone(email, phone)) {
+    private void checkUserExist(String email, String phone) {
+        if (userService.existByEmailAndPhone(email, phone)) {
             throw new UserExistException();
         }
     }
@@ -79,7 +81,7 @@ public class AuthorizationController {
         }
     }
 
-    private String userAuthenticationAndGenerateToken(String email, String password) {
+    private String generateToken(String email, String password) {
         Authentication authentication = authenticationManager.authenticate(new
                 UsernamePasswordAuthenticationToken(email, password));
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();

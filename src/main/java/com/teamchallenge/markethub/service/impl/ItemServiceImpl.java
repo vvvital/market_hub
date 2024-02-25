@@ -22,7 +22,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public ItemDetailsResponse findItemById(long id) throws ItemNotFoundException {
+    public ItemDetailsResponse findItemById(long id) {
         Item item = itemRepository.findById(id).orElseThrow(
                 () -> new ItemNotFoundException(ErrorMessages.ITEM_NOT_FOUND.text()));
         return ItemDetailsResponse.convertToItemDetailsResponse(item);

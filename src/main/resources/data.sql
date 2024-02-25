@@ -50,4 +50,11 @@ VALUES  (100, 'Ноутбук LENOVO IdeaPad 3', 29999, '2024-01-26 12:12:0', '2
         (650, 'Планшет Lenovo Yoga Tab 11',15999,'2024-02-03 20:12:11', '350838', true, 23,100,220,'localhost:8080/markethub/categories/100/3771.png', 12, 'none','Lenovo',3),
         (675, 'Планшет Samsung Galaxy Tab A7 Lite',4999,'2024-02-01 11:12:28', '350839', true, 24,100,220,'localhost:8080/markethub/categories/100/3903.png', 9, 'none','Samsung',3),
         (700, 'Планшет Pixus Titan',6999,'2024-02-01 10:24:21', '350840', true, 11,100,220,'localhost:8080/markethub/categories/100/4035.png', 4, 'none','Pixus',3),
-        (725, 'Планшет Oscal Spider',9850,'2024-02-02 09:41:53', '350841', false, 0,100,220,'localhost:8080/markethub/categories/100/4167.png', 17, 'none','Oscal',1);
+        (725, 'Планшет Oscal Spider',9850,'2024-02-02 09:41:53', '350841', false, 0,100,220,'localhost:8080/markethub/categories/100/4167.png', 17, 'none','Oscal',1),
+        (750, 'Ноутбук Lenovo LOQ 15IRH8 (82XV00K8RA) Storm Grey', 48999, '2024-02-04 12:32:45', '389481501', false, 0, 100, 100, 'localhost:8080/markethub/categories/100/4299.png', 18, 'none', 'Lenovo', 1),
+        (775, 'Ноутбук ASUS VivoBook 17X M3704YA-AU091', 25999, '2024-02-04 14:12:15', '407423565', true, 12, 100, 100, 'localhost:8080/markethub/categories/100/4431.png', 13, 'none', 'Asus', 1),
+        (800, 'Ноутбук HP Laptop 17-cn2016ua', 19999, '2024-02-04 17:42:35', '401441715', true, 17, 100, 100, 'localhost:8080/markethub/categories/100/4563.png', 24, 'none', 'Hp', 1),
+        (825, 'Ноутбук Acer Aspire 7 A715-76G-560W', 33999, '2024-02-05 11:32:21', '389616495', true, 5, 100, 100, 'localhost:8080/markethub/categories/100/4695.png', 15, 'none', 'Acer', 1),
+        (850, 'Ноутбук Dell Inspiron 3525', 26999, '2024-02-05 12:42:11', '384979461', true, 4, 100, 100, 'localhost:8080/markethub/categories/100/4827.png', 27, 'none', 'Dell', 1),
+        (875, 'Ноутбук Acer Nitro 5 AN515-46-R8TS', 35999, '2024-02-05 12:27:35', '399408063', true, 7, 100, 100, 'localhost:8080/markethub/categories/100/4959.png', 11, 'none', 'Acer', 1),
+        (900, 'Ноутбук Lenovo LOQ 15IRH8 (82XV00K7RA)', 44999, '2024-02-05 13:12:31', '391662234', true, 12, 100, 100, 'localhost:8080/markethub/categories/100/5091.png', 4, 'none', 'Lenovo', 1);

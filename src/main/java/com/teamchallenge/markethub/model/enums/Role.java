@@ -1,4 +1,4 @@
-package com.teamchallenge.markethub.model.role.Role.java;
+package com.teamchallenge.markethub.model.enums;
 
 
 public enum Role {

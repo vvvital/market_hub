@@ -33,9 +33,11 @@ public class ItemController {
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
             @RequestParam(name = "available", required = false, defaultValue = EMPTY) String available,
             @RequestParam(name = "brand", required = false, defaultValue = EMPTY) List<String> brand) {
+
         List<ItemDetails> filteredItemList = getFilter(itemService::getAllItemByCategoryId,
                 categoryId, pageable, getRequestParams(priceFrom, priceTo, available, brand));
         int size = getCountItemsById(itemService::getCountItemsByCategoryId, categoryId);
+
         return ResponseEntity.ok(new ItemResponse(size, filteredItemList));
     }
 
@@ -46,9 +48,11 @@ public class ItemController {
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
             @RequestParam(name = "available", required = false, defaultValue = EMPTY) String available,
             @RequestParam(name = "brand", required = false, defaultValue = EMPTY) List<String> brand) {
+
         List<ItemDetails> filteredItemList = getFilter(itemService::getAllItemBySubCategoryId,
                 subCategoryId, pageable, getRequestParams(priceFrom, priceTo, available, brand));
         int size = getCountItemsById(itemService::getCountItemsBySubCategoryId, subCategoryId);
+
         return ResponseEntity.ok(new ItemResponse(size, filteredItemList));
     }
 
@@ -66,7 +70,7 @@ public class ItemController {
     }
 
     @GetMapping("/{item_id}")
-    public ResponseEntity<ItemDetailsResponse> getItem(@PathVariable(name = "item_id") long itemId) throws ItemNotFoundException {
+    public ResponseEntity<ItemDetailsResponse> getItem(@PathVariable(name = "item_id") long itemId) {
         return ResponseEntity.ok(itemService.findItemById(itemId));
     }
 

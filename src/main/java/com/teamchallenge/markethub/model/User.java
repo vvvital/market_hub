@@ -51,6 +51,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "seller")
     private List<Item> items;
 
+    @OneToMany
+    private List<Order> orders;
+
+    @ManyToMany
+    private List<Item> favorite;
+
+    //TODO: Create field 'favorite items'
+    //TODO: Create field 'orders'
+
     public User(String firstname, String lastname, String email, String phone, String password) {
         this.firstname = firstname;
         this.lastname = lastname;

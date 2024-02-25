@@ -1,19 +1,15 @@
 package com.teamchallenge.markethub.error;
 
 import com.teamchallenge.markethub.error.exception.*;
-import freemarker.template.TemplateException;
-import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailSendException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.io.IOException;
 
 @RestControllerAdvice
 public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
@@ -26,38 +22,6 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
         ResponseApiError responseApiError = new ResponseApiError(
                 new ErrorDetails(404, ErrorMessages.USER_NOT_FOUND.text()));
         return ResponseEntity.status(404).body(responseApiError);
-    }
-
-    @ExceptionHandler(MessagingException.class)
-    protected ResponseEntity<?> handleMessagingException(MessagingException e) {
-        log.error("{}", e.getMessage());
-        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
-                500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(responseApiError);
-    }
-
-    @ExceptionHandler(IOException.class)
-    protected ResponseEntity<?> handleIOException(IOException e) {
-        log.error("{}", e.getMessage());
-        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
-                500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(responseApiError);
-    }
-
-    @ExceptionHandler(TemplateException.class)
-    protected ResponseEntity<?> handleTemplateException(TemplateException e) {
-        log.error("{}", e.getMessage());
-        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
-                500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(responseApiError);
-    }
-
-    @ExceptionHandler(MailSendException.class)
-    protected ResponseEntity<?> handleMailSendException(MailSendException e) {
-        log.error("{}", e.getMessage());
-        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
-                500, ErrorMessages.MAIL_FAIL.text()));
-        return ResponseEntity.status(500).body(responseApiError);
     }
 
     @ExceptionHandler(UserExistException.class)

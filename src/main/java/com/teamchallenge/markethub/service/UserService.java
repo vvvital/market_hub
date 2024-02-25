@@ -11,7 +11,7 @@ public interface UserService {
     void update(User user);
     void remove(Integer id) throws UserNotFoundException;
     User findByEmail(String email);
-    boolean findByEmailAndPhone(String email, String phone) throws UserExistException;
+    boolean existByEmailAndPhone(String email, String phone) throws UserExistException;
     User findById(Integer id) throws UserNotFoundException;
     List<User> findAll();
 }
