@@ -1,6 +1,6 @@
 package com.teamchallenge.markethub.service;
 
-import com.teamchallenge.markethub.dto.item.ItemDetailsResponse;
+import com.teamchallenge.markethub.dto.item.ItemInfoResponse;
 import com.teamchallenge.markethub.dto.item.detail.ItemDetails;
 import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ItemService {
-    ItemDetailsResponse findItemById(long id) throws ItemNotFoundException, UserNotFoundException, CategoryNotFoundException, SubCategoryNotFoundException;
+    ItemInfoResponse findItemById(long id);
 
     List<ItemDetails> getAllItemByCategoryId(long categoryId, Pageable pageable);
 

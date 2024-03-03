@@ -51,14 +51,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "seller")
     private List<Item> items;
 
-    @OneToMany
-    private List<Order> orders;
-
     @ManyToMany
+    @JoinTable(
+            name = "favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private List<Item> favorite;
-
-    //TODO: Create field 'favorite items'
-    //TODO: Create field 'orders'
 
     public User(String firstname, String lastname, String email, String phone, String password) {
         this.firstname = firstname;
@@ -105,7 +104,7 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role;
+        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(role, user.role);
     }
 
     @Override

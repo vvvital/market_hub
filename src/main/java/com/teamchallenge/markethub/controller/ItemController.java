@@ -2,10 +2,9 @@ package com.teamchallenge.markethub.controller;
 
 import com.teamchallenge.markethub.controller.filter.ItemFilter;
 import com.teamchallenge.markethub.controller.filter.ItemRequestParams;
-import com.teamchallenge.markethub.dto.item.ItemDetailsResponse;
+import com.teamchallenge.markethub.dto.item.ItemInfoResponse;
 import com.teamchallenge.markethub.dto.item.detail.ItemDetails;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
-import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.service.impl.ItemServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -70,7 +69,7 @@ public class ItemController {
     }
 
     @GetMapping("/{item_id}")
-    public ResponseEntity<ItemDetailsResponse> getItem(@PathVariable(name = "item_id") long itemId) {
+    public ResponseEntity<ItemInfoResponse> getItem(@PathVariable(name = "item_id") long itemId) {
         return ResponseEntity.ok(itemService.findItemById(itemId));
     }
 

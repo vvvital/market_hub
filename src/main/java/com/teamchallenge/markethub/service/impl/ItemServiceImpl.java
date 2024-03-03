@@ -1,6 +1,6 @@
 package com.teamchallenge.markethub.service.impl;
 
-import com.teamchallenge.markethub.dto.item.ItemDetailsResponse;
+import com.teamchallenge.markethub.dto.item.ItemInfoResponse;
 import com.teamchallenge.markethub.dto.item.detail.ItemDetails;
 import com.teamchallenge.markethub.error.ErrorMessages;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
@@ -22,10 +22,11 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public ItemDetailsResponse findItemById(long id) {
+    public ItemInfoResponse findItemById(long id) {
         Item item = itemRepository.findById(id).orElseThrow(
                 () -> new ItemNotFoundException(ErrorMessages.ITEM_NOT_FOUND.text()));
-        return ItemDetailsResponse.convertToItemDetailsResponse(item);
+        System.out.println("ITEM: " + item.toString());
+        return ItemInfoResponse.convertToItemDetailsResponse(item);
     }
 
     @Override

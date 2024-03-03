@@ -229,10 +229,10 @@ public class ItemControllerTest {
         int sizeItemsArray = documentContext.read("$['items'].length()");
         int expectedSize = 2;
 
-        String brand = documentContext.read("$['items'][0].brand");
+        String brand = documentContext.read("$['items'][0]['brand']");
         String expectedBrand = "Lenovo";
 
-        String brand2 = documentContext.read("$['items'][1].brand");
+        String brand2 = documentContext.read("$['items'][1]['brand']");
         String expectedBrand2 = "Samsung";
         assertThat(sizeItemsArray).isEqualTo(expectedSize);
         assertThat(brand).isEqualTo(expectedBrand);
@@ -247,10 +247,10 @@ public class ItemControllerTest {
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int sizeItemsArray = documentContext.read("$['items'].length()");
         int expectedSize = 1;
+        assertThat(sizeItemsArray).isEqualTo(expectedSize);
 
         String brand = documentContext.read("$['items'][0].brand");
         String expectedBrand = "Samsung";
-        assertThat(sizeItemsArray).isEqualTo(expectedSize);
         assertThat(brand).isEqualTo(expectedBrand);
     }
 

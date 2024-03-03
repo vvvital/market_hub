@@ -3,10 +3,7 @@ package com.teamchallenge.markethub.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.repository.cdi.Eager;
 
@@ -19,6 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "goods")
 public class Item {
@@ -83,6 +81,14 @@ public class Item {
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller;
 
+    @ManyToMany
+    @JoinTable(
+            name = "favorites",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> favoriteByUsers;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,5 +100,26 @@ public class Item {
     @Override
     public int hashCode() {
         return Objects.hash(name, article, category, subCategory, seller);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", createAt=" + createAt +
+                ", article='" + article + '\'' +
+                ", available=" + available +
+                ", stockQuantity=" + stockQuantity +
+                ", category=" + category +
+                ", subCategory=" + subCategory +
+                ", photoPreview='" + photoPreview + '\'' +
+                ", photo=" + photo +
+                ", sold=" + sold +
+                ", description='" + description + '\'' +
+                ", brand='" + brand + '\'' +
+                ", seller=" + seller +
+                '}';
     }
 }

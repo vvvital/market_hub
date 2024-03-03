@@ -42,7 +42,7 @@ VALUES  (100, 'Ноутбук LENOVO IdeaPad 3', 29999, '2024-01-26 12:12:0', '2
         (453, 'Кишеньковий ПК Intel N95', 6998, '2024-02-03 11:09:34', '684194', true, 5, 100, 160, 'localhost:8080/markethub/categories/100/2715.png', 2, 'none', 'Intel', 2),
         (478, 'Комп''ютер Cobra Advanced I14F.16.H1S4.166S.6368', 22599, '2024-02-03 12:31:12', '337237', true, 8, 100, 160, 'localhost:8080/markethub/categories/100/2847.png', 4, 'none', 'Cobra', 2),
         (503, 'Комп''ютер ARTLINE Gaming X39 v67', 30599, '2024-02-03 14:27:12', '371268', false, 0, 100, 160, 'localhost:8080/markethub/categories/100/2979.png', 12, 'none', 'Artline', 2),
-        (528, 'Планшет Lenovo Tab M10 Plus', 6999, '2024-02-03 17:12:34', '392003', true, 12, 100, 220, 'localhost:8080/markethub/categories/100/3111.png', 14, 'none', 'Lenovo', 3),
+        (528, 'Планшет Lenovo Tab M10 Plus', 6957, '2024-02-03 17:12:34', '392003', true, 12, 100, 220, 'localhost:8080/markethub/categories/100/3111.png', 14, 'none', 'Lenovo', 3),
         (553, 'Планшет Apple iPad 10.9" 2022', 22499, '2024-02-03 14:11:12', '357715', true, 9, 100, 220, 'localhost:8080/markethub/categories/100/3243.png', 10, 'none', 'Apple', 3),
         (575, 'Планшет Samsung Galaxy Tab A9', 5849, '2024-02-04 11:12:05', '412056', true, 21, 100, 220, 'localhost:8080/markethub/categories/100/3375.png', 11, 'none', 'Samsung', 3),
         (600, 'Планшет Apple iPad Air 10.9', 29499, '2024-02-03 19:12:01', '337933', true, 7, 100, 220, 'localhost:8080/markethub/categories/100/3507.png', 3, 'none', 'Apple', 3),
@@ -58,3 +58,23 @@ VALUES  (100, 'Ноутбук LENOVO IdeaPad 3', 29999, '2024-01-26 12:12:0', '2
         (850, 'Ноутбук Dell Inspiron 3525', 26999, '2024-02-05 12:42:11', '384979461', true, 4, 100, 100, 'localhost:8080/markethub/categories/100/4827.png', 27, 'none', 'Dell', 1),
         (875, 'Ноутбук Acer Nitro 5 AN515-46-R8TS', 35999, '2024-02-05 12:27:35', '399408063', true, 7, 100, 100, 'localhost:8080/markethub/categories/100/4959.png', 11, 'none', 'Acer', 1),
         (900, 'Ноутбук Lenovo LOQ 15IRH8 (82XV00K7RA)', 44999, '2024-02-05 13:12:31', '391662234', true, 12, 100, 100, 'localhost:8080/markethub/categories/100/5091.png', 4, 'none', 'Lenovo', 1);
+
+
+INSERT INTO
+    orders(customer_firstname, customer_lastname, customer_email,
+           customer_phone, customer_city, total_quantity, delivery_service, postal_address, total_amount, create_at, status)
+VALUES ('Bilbo', 'Baggins', 'bilbo@gmail.com', '0943532234', 'Hobbiton', '2', 'NOVA_POSHTA', 'Backer street 221b', 32720, '2024-02-26 12:28:14', 'IN_PROCESS');
+
+INSERT INTO favorites(user_id, item_id) VALUES (1, 100);
+INSERT INTO favorites(user_id, item_id) VALUES (1, 128);
+
+INSERT INTO photos(id, name, url, item_id) VALUES (5223, '5223', 'localhost:8080/markethub/categories/100/5223.png',100);
+INSERT INTO photos(id, name, url, item_id) VALUES (5355, '5355', 'localhost:8080/markethub/categories/100/5355.png',100);
+INSERT INTO photos(id, name, url, item_id) VALUES (5487, '5487', 'localhost:8080/markethub/categories/100/5487.png',128);
+INSERT INTO photos(id, name, url, item_id) VALUES (5619, '5619', 'localhost:8080/markethub/categories/100/5619.png',128);
+INSERT INTO photos(id, name, url, item_id) VALUES (5751, '5751', 'localhost:8080/markethub/categories/100/5751.png',303);
+INSERT INTO photos(id, name, url, item_id) VALUES (5883, '5883', 'localhost:8080/markethub/categories/100/5883.png',303);
+INSERT INTO photos(id, name, url, item_id) VALUES (6015, '6015', 'localhost:8080/markethub/categories/100/6015.png',328);
+INSERT INTO photos(id, name, url, item_id) VALUES (6147, '6147', 'localhost:8080/markethub/categories/100/6147.png',328);
+INSERT INTO photos(id, name, url, item_id) VALUES (6279, '6279', 'localhost:8080/markethub/categories/100/6279.png',353);
+INSERT INTO photos(id, name, url, item_id) VALUES (6411, '6411', 'localhost:8080/markethub/categories/100/6411.png',353);
