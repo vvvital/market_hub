@@ -8,7 +8,6 @@ import com.teamchallenge.markethub.dto.user.UserDto;
 import com.teamchallenge.markethub.email.CustomTemplates;
 import com.teamchallenge.markethub.email.EmailSender;
 import com.teamchallenge.markethub.error.ErrorDetails;
-import com.teamchallenge.markethub.error.ErrorMessages;
 import com.teamchallenge.markethub.error.ResponseApiError;
 import com.teamchallenge.markethub.model.User;
 import com.teamchallenge.markethub.service.impl.UserServiceImpl;
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.teamchallenge.markethub.error.ErrorMessages.MAIL_FAIL;
 
 @AllArgsConstructor
 @RestController
@@ -61,7 +62,7 @@ public class UserController {
 
     private ResponseApiError errorResponse() {
         return new ResponseApiError(new ErrorDetails(
-                500, ErrorMessages.MAIL_FAIL.text()));
+                500, MAIL_FAIL));
     }
 
     private Map<String, Object> params(EmailRequest emailRequest) {

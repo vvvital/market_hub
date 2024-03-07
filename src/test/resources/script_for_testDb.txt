@@ -1,0 +1,35 @@
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (220, 'Планшети', 'localhost:8080/markethub/categories/100/220.png', 100);
+
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (340, 'Смартфони', 'localhost:8080/markethub/categories/175/340.jpg', 175);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (400, 'Розумні годинники', 'localhost:8080/markethub/categories/175/400.jpg', 175);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (460, 'Аксесуари', 'localhost:8080/markethub/categories/175/460.jpg', 175);
+
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (520, 'Дрібна', 'localhost:8080/markethub/categories/250/520.jpg', 250);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (580, 'Велика', 'localhost:8080/markethub/categories/250/580.jpg', 250);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (640, 'Кліматична', 'localhost:8080/markethub/categories/250/640.jpg', 250);
+
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (700, 'Приставки', 'localhost:8080/markethub/categories/325/700.jpg', 325);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (760, 'Джойстики', 'localhost:8080/markethub/categories/325/760.jpg', 325);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (820, 'Комплектуючі', 'localhost:8080/markethub/categories/325/820.png', 325);
+
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (880, 'Навушники', 'localhost:8080/markethub/categories/400/880.jpg', 400);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (940, 'Акустичні системи', 'localhost:8080/markethub/categories/400/940.jpg', 400);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (1000, 'Медіаплеєри', 'localhost:8080/markethub/categories/400/1000.jpg', 400);
+
+
+INSERT INTO goods(id, name, price, create_at, article, available, stock_quantity, category_id, sub_category_id, photo_preview, sold, description, brand, seller_id)
+VALUES  (100, 'Ноутбук LENOVO IdeaPad 3', 29999, '2024-01-26 12:12:0', '2134321', true, 25, 100, 100, 'localhost:8080/markethub/categories/100/1000.png', 18, 'none', 'Lenovo', 1),
+        (128, 'Ноутбук Asus Vivobook 15', 17499, '2024-01-26 13:12:0', '6586223', false, 0, 100, 100, 'localhost:8080/markethub/categories/100/1132.png', 25, 'none', 'Asus', 1),
+        (153, 'Ноутбук Acer Aspire 3 A317-55P-P6CH', 17768, '2024-01-27 13:24:23','735463', true, 15, 100, 100, 'localhost:8080/markethub/categories/100/1923.png', 1, 'none', 'Acer', 1),
+        (178, 'Ноутбук ASUS X712EA-BX868', 18439, '2024-01-27 17:21:53', '721985', true, 8, 100, 100, 'localhost:8080/markethub/categories/100/2055.png', 4, 'none', 'Asus', 1),
+        (203, 'Ноутбук HP 15s-eq2345nw', 25305, '2024-02-01 12:11:43', '554168', true, 5, 100, 100, 'localhost:8080/markethub/categories/100/2187.png', 5, 'none', 'Hp', 1),
+        (228, 'Ноутбук Lenovo LOQ 15IRH8 (82XV00K8RA) Storm Grey', 48999, '2024-02-04 12:32:45', '389481501', false, 0, 100, 100, 'localhost:8080/markethub/categories/100/4299.png', 18, 'none', 'Lenovo', 1),
+        (253, 'Ноутбук Lenovo V15 G3 IAP', 26374, '2024-02-01 14:10:23', '562797', true, 12, 100, 100, 'localhost:8080/markethub/categories/100/2319.png', 9, 'none', 'Lenovo', 1),
+        (278, 'Ноутбук Apple MacBook Air M2 A2681', 55199, '2024-02-02 18:14:23', '212280', true, 4, 100, 100, 'localhost:8080/markethub/categories/100/2451.png', 1, 'none', 'Apple', 1),
+        (371, 'Ноутбук ASUS VivoBook 17X M3704YA-AU091', 25999, '2024-02-04 14:12:15', '407423565', true, 12, 100, 100, 'localhost:8080/markethub/categories/100/4431.png', 13, 'none', 'Asus', 1),
+        (398, 'Ноутбук HP Laptop 17-cn2016ua', 19999, '2024-02-04 17:42:35', '401441715', true, 17, 100, 100, 'localhost:8080/markethub/categories/100/4563.png', 24, 'none', 'Hp', 1);
+
+INSERT INTO photos(id, name, url, item_id) VALUES (5223, '5223', 'localhost:8080/markethub/categories/100/5223.png',100);
+INSERT INTO photos(id, name, url, item_id) VALUES (5355, '5355', 'localhost:8080/markethub/categories/100/5355.png',100);
+INSERT INTO photos(id, name, url, item_id) VALUES (5487, '5487', 'localhost:8080/markethub/categories/100/5487.png',128);
+INSERT INTO photos(id, name, url, item_id) VALUES (5619, '5619', 'localhost:8080/markethub/categories/100/5619.png',128);

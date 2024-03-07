@@ -1,7 +1,6 @@
 package com.teamchallenge.markethub.service.impl;
 
 import com.teamchallenge.markethub.error.ErrorMessages;
-import com.teamchallenge.markethub.error.exception.UserExistException;
 import com.teamchallenge.markethub.error.exception.UserNotFoundException;
 import com.teamchallenge.markethub.model.User;
 import com.teamchallenge.markethub.repository.UserRepository;
@@ -9,13 +8,14 @@ import com.teamchallenge.markethub.service.UserService;
 import lombok.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static com.teamchallenge.markethub.error.ErrorMessages.USER_NOT_FOUND;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void remove(Integer id) {
         Optional<User> user = userRepository.findById(id);
         userRepository.delete(user.orElseThrow(() ->
-                new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.text())));
+                new UserNotFoundException(USER_NOT_FOUND)));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User findById(Integer id) {
         Optional<User> user = userRepository.findById(id);
-        return user.orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND.text()));
+        return user.orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND));
     }
 
     @Override

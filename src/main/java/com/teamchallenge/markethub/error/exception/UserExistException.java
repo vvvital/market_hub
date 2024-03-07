@@ -1,9 +1,9 @@
 package com.teamchallenge.markethub.error.exception;
 
-import com.teamchallenge.markethub.error.ErrorMessages;
+import static com.teamchallenge.markethub.error.ErrorMessages.USER_EXIST;
 
 public class UserExistException extends RuntimeException {
     public UserExistException() {
-        super(ErrorMessages.USER_EXIST.text());
+        super(USER_EXIST);
     }
 }

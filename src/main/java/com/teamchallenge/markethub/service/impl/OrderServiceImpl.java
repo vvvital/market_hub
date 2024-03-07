@@ -28,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(@NonNull OrderRequest request) {
+        //todo: add 'sold' for every item;
         if (request.getItems().isEmpty()) {
             throw new IllegalArgumentException("array items must not be empty");
         }

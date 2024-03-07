@@ -1,4 +1,4 @@
-package com.teamchallenge.markethub.dto.item;
+package com.teamchallenge.markethub.dto.item.util;
 
 import com.teamchallenge.markethub.dto.item.detail.CategoryDetails;
 import com.teamchallenge.markethub.dto.item.detail.SellerDetails;
@@ -10,10 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
 @Setter
-public class ItemUtils {
+public final class ItemUtils {
+
+    private ItemUtils() {
+
+    }
 
     public static CategoryDetails createCategoryDetails(Category category) {
         return new CategoryDetails(category.getId(), category.getName());

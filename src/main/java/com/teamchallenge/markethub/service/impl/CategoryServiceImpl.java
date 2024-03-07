@@ -30,6 +30,6 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryResponse findCategoryById(Long id) {
         Optional<Category> category = categoryRepository.findById(id);
         return CategoryResponse.convertToCategoryResponse(category.orElseThrow(
-                () -> new CategoryNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND.text())));
+                () -> new CategoryNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND)));
     }
 }

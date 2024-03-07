@@ -1,8 +1,7 @@
 package com.teamchallenge.markethub.service.impl;
 
-import com.teamchallenge.markethub.dto.item.ItemInfoResponse;
-import com.teamchallenge.markethub.dto.item.detail.ItemDetails;
-import com.teamchallenge.markethub.error.ErrorMessages;
+import com.teamchallenge.markethub.dto.item.ItemCardResponse;
+import com.teamchallenge.markethub.dto.item.ItemResponse;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.model.Item;
 import com.teamchallenge.markethub.repository.ItemRepository;
@@ -15,45 +14,51 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.teamchallenge.markethub.error.ErrorMessages.ITEM_NOT_FOUND;
+
 @AllArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    private final static String DEFAULT_SORT = "sold";
+
     private final ItemRepository itemRepository;
 
     @Override
-    public ItemInfoResponse findItemById(long id) {
+    public ItemCardResponse getItemCardById(long id) {
         Item item = itemRepository.findById(id).orElseThrow(
-                () -> new ItemNotFoundException(ErrorMessages.ITEM_NOT_FOUND.text()));
-        System.out.println("ITEM: " + item.toString());
-        return ItemInfoResponse.convertToItemDetailsResponse(item);
+                () -> new ItemNotFoundException(ITEM_NOT_FOUND));
+        return ItemCardResponse.convertToItemCardResponse(item);
     }
 
     @Override
-    public List<ItemDetails> getAllItemByCategoryId(long categoryId, Pageable pageable) {
+    public List<ItemResponse> getAllItemByCategoryId(long categoryId, Pageable pageable) {
         return itemRepository.findAllByCategoryId(categoryId,
                         PageRequest.of(
                                 pageable.getPageNumber(),
                                 pageable.getPageSize(),
-                                pageable.getSortOr(Sort.by(Sort.Direction.ASC, "sold"))
+                                pageable.getSortOr(Sort.by(Sort.Direction.ASC, DEFAULT_SORT))
                         )).stream()
-                .map(ItemDetails::convertToItemDetails).toList();
+                .map(ItemResponse::convertToItemResponse).toList();
     }
 
     @Override
-    public List<ItemDetails> getAllItemBySubCategoryId(long subCategoryId, Pageable pageable) {
+    public List<ItemResponse> getAllItemBySubCategoryId(long subCategoryId, Pageable pageable) {
         return itemRepository.findAllBySubCategoryId(subCategoryId,
                         PageRequest.of(
                                 pageable.getPageNumber(),
                                 pageable.getPageSize(),
-                                pageable.getSortOr(Sort.by(Sort.Direction.ASC, "sold"))
+                                pageable.getSortOr(Sort.by(Sort.Direction.ASC, DEFAULT_SORT))
                         )).stream()
-                .map(ItemDetails::convertToItemDetails).toList();
+                .map(ItemResponse::convertToItemResponse).toList();
     }
 
+    /*
+        stub method, need refactoring
+     */
     @Override
-    public ItemDetails findItem(long id) {
-        return ItemDetails.convertToItemDetails(itemRepository.findById(id).get());
+    public ItemResponse getItemById(long id) {
+        return ItemResponse.convertToItemResponse(itemRepository.findById(id).get());
     }
 
     @Override

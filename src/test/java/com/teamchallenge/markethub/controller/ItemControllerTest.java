@@ -62,8 +62,8 @@ public class ItemControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int expectedSize = itemRepositoryTest.findAllByCategoryId(100).size();  //2
-        int currentSize = documentContext.read("$.length()");
+        int expectedSize = itemRepositoryTest.findAllByCategoryId(100).size();  //10
+        int currentSize = documentContext.read("$.items.length()");
 
         assertThat(currentSize).isEqualTo(expectedSize);
     }
@@ -75,7 +75,7 @@ public class ItemControllerTest {
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int expectedSize = itemRepositoryTest.findAllBySubCategoryId(100).size();
-        int currentSize = documentContext.read("$.length()");
+        int currentSize = documentContext.read("$.items.length()");
 
         assertThat(currentSize).isEqualTo(expectedSize);
     }
@@ -86,7 +86,7 @@ public class ItemControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        String expectedDate = "2024-01-26T14:12:00";
+        String expectedDate = "2024-02-04T17:42:35";
         System.out.println(response);
         String dateFirstItem = documentContext.read("$['items'][0].['create_at']");
 
@@ -99,7 +99,7 @@ public class ItemControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        String expectedDate = "2024-01-26T14:12:00";
+        String expectedDate = "2024-02-04T17:42:35";
         System.out.println(response);
         String dateFirstItem = documentContext.read("$['items'][0].['create_at']");
 
@@ -112,7 +112,7 @@ public class ItemControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        Double expectedPrice = 29999.00;
+        Double expectedPrice = 55199.00;
         Double priceFirstItem = documentContext.read("$['items'][0].['price']");
 
         assertThat(priceFirstItem).isEqualTo(expectedPrice);
@@ -124,7 +124,7 @@ public class ItemControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        Double expectedPrice = 29999.00;
+        Double expectedPrice = 55199.00;
         Double priceFirstItem = documentContext.read("$['items'][0].price");
 
         assertThat(priceFirstItem).isEqualTo(expectedPrice);
@@ -198,50 +198,48 @@ public class ItemControllerTest {
 
     @Test
     public void shouldReturnItemsByCategoryIdByBrand() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?brand=Apple", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?brands=Apple", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         System.out.println("RESPONSE: " + response);
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int sizeItemsArray = documentContext.read("$['items'].length()");
-        int expectedSize = 0;
+        int expectedSize = 1;
         assertThat(sizeItemsArray).isEqualTo(expectedSize);
     }
 
     @Test
     public void shouldReturnItemsBySubCategoryIdByBrand() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?brand=Apple", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?brands=Apple", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int sizeItemsArray = documentContext.read("$['items'].length()");
-        int expectedSize = 0;
+        int expectedSize = 1;
 
         assertThat(sizeItemsArray).isEqualTo(expectedSize);
     }
 
     @Test
     public void shouldReturnItemsBySubCategoryIdByMultiBrand() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?brand=Lenovo,Samsung", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?brands=Lenovo,Samsung", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int sizeItemsArray = documentContext.read("$['items'].length()");
-        int expectedSize = 2;
+        int expectedSize = 3;
+
+        assertThat(sizeItemsArray).isEqualTo(expectedSize);
 
         String brand = documentContext.read("$['items'][0]['brand']");
         String expectedBrand = "Lenovo";
 
-        String brand2 = documentContext.read("$['items'][1]['brand']");
-        String expectedBrand2 = "Samsung";
-        assertThat(sizeItemsArray).isEqualTo(expectedSize);
         assertThat(brand).isEqualTo(expectedBrand);
-        assertThat(brand2).isEqualTo(expectedBrand2);
     }
 
     @Test
     public void shouldReturnItemsBySubCategoryIdByMultiBrandIfOneBrandHaveNotItem() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?brand=Apple,Samsung", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/sub-categories/100?brands=Apple,Samsung", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -250,7 +248,7 @@ public class ItemControllerTest {
         assertThat(sizeItemsArray).isEqualTo(expectedSize);
 
         String brand = documentContext.read("$['items'][0].brand");
-        String expectedBrand = "Samsung";
+        String expectedBrand = "Apple";
         assertThat(brand).isEqualTo(expectedBrand);
     }
 
@@ -278,14 +276,25 @@ public class ItemControllerTest {
 
     @Test
     public void shouldReturnItemsByCategoryIdWithAllFilters() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?price_from=17400&price_to=30000&available=true&brand=Lenovo,Samsung", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/goods/categories/100?price_from=30000&price_to=50000&available=false&brands=Lenovo,Asus", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        DocumentContext documentContext = JsonPath.parse(response.getBody()); //Lenovo  price=489999
         int sizeItemsArray = documentContext.read("$['items'].length()");
         int expectedSize = 1;
 
         assertThat(sizeItemsArray).isEqualTo(expectedSize);
+
+        double priceActual = documentContext.read("$['items'][0].['price']");
+        double priceFrom = 30000;
+        double priceTo = 50000;
+
+        assertThat(priceActual).isGreaterThanOrEqualTo(priceFrom).isLessThanOrEqualTo(priceTo);
+
+        String brand = documentContext.read("$['items'][0]['brand']");
+        String expectedBrand = "Lenovo";
+
+        assertThat(brand).isEqualTo(expectedBrand);
     }
 
 }

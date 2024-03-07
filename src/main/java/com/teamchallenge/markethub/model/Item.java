@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.repository.cdi.Eager;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -94,7 +92,8 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return Objects.equals(name, item.name) && Objects.equals(article, item.article) && Objects.equals(category, item.category) && Objects.equals(subCategory, item.subCategory) && Objects.equals(seller, item.seller);
+        return Objects.equals(name, item.name) && Objects.equals(article, item.article)
+                && Objects.equals(category, item.category) && Objects.equals(subCategory, item.subCategory) && Objects.equals(seller, item.seller);
     }
 
     @Override
