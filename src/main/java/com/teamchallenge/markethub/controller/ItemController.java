@@ -1,6 +1,5 @@
 package com.teamchallenge.markethub.controller;
 
-import com.teamchallenge.markethub.controller.filter.ItemFilter;
 import com.teamchallenge.markethub.controller.filter.ItemsFilterParams;
 import com.teamchallenge.markethub.dto.item.ItemCardResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @AllArgsConstructor
@@ -30,12 +28,12 @@ public class ItemController {
             @PathVariable(name = "category_id") long categoryId, Pageable pageable,
             @RequestParam(name = "price_from", required = false, defaultValue = MIN_VALUE) double priceFrom,
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
-            @RequestParam(name = "available", required = false, defaultValue = DEFAULT) String available,
-            @RequestParam(name = "brands", required = false, defaultValue = DEFAULT) List<String> brands) {
+            @RequestParam(name = "available", required = false, defaultValue = NOT_SPECIFIED) String available,
+            @RequestParam(name = "brands", required = false, defaultValue = NOT_SPECIFIED) List<String> brands) {
 
-        List<ItemResponse> filteredItemList = getFilter(itemService::getAllItemByCategoryId,
-                categoryId, pageable, getRequestParams(priceFrom, priceTo, available, brands));
-        int size = getCountItemsById(itemService::getCountItemsByCategoryId, categoryId);
+        ItemsFilterParams itemsFilterParams = getRequestParams(categoryId, priceFrom, priceTo, available, brands);
+        List<ItemResponse> filteredItemList = itemService.getAllItemByCategoryId(itemsFilterParams, pageable);
+        int size = size(itemService::getCountItemsByCategoryId, categoryId);
 
         return ResponseEntity.ok(new ItemsResponse(size, filteredItemList));
     }
@@ -45,28 +43,24 @@ public class ItemController {
             @PathVariable(name = "sub_category_id") long subCategoryId, Pageable pageable,
             @RequestParam(name = "price_from", required = false, defaultValue = MIN_VALUE) double priceFrom,
             @RequestParam(name = "price_to", required = false, defaultValue = MAX_VALUE) double priceTo,
-            @RequestParam(name = "available", required = false, defaultValue = DEFAULT) String available,
-            @RequestParam(name = "brands", required = false, defaultValue = DEFAULT) List<String> brands) {
+            @RequestParam(name = "available", required = false, defaultValue = NOT_SPECIFIED) String available,
+            @RequestParam(name = "brands", required = false, defaultValue = NOT_SPECIFIED) List<String> brands) {
 
-        List<ItemResponse> filteredItemList = getFilter(itemService::getAllItemBySubCategoryId,
-                subCategoryId, pageable, getRequestParams(priceFrom, priceTo, available, brands));
-        int size = getCountItemsById(itemService::getCountItemsBySubCategoryId, subCategoryId);
+        ItemsFilterParams itemsFilterParams = getRequestParams(subCategoryId, priceFrom, priceTo, available, brands);
+        List<ItemResponse> filteredItemList = itemService.getAllItemBySubCategoryId(itemsFilterParams, pageable);
+        int size = size(itemService::getCountItemsBySubCategoryId, subCategoryId);
 
         return ResponseEntity.ok(new ItemsResponse(size, filteredItemList));
     }
 
-    private static ItemsFilterParams getRequestParams(double priceFrom, double priceTo, String available, List<String> brand) {
-        return new ItemsFilterParams(priceFrom, priceTo, available, brand);
+    private static ItemsFilterParams getRequestParams(long id, double priceFrom, double priceTo, String available, List<String> brand) {
+        return new ItemsFilterParams(id, priceFrom, priceTo, available, brand);
     }
 
-    private int getCountItemsById(Function<Long, Integer> function, long id) {
+    private int size(Function<Long, Integer> function, long id) {
         return function.apply(id);
     }
 
-    private List<ItemResponse> getFilter(BiFunction<Long, Pageable, List<ItemResponse>> function, long id, Pageable pageable, ItemsFilterParams params) {
-        List<ItemResponse> list = function.apply(id, pageable);
-        return ItemFilter.toFilter(list, params);
-    }
 
     @GetMapping("/{item_id}")
     public ResponseEntity<ItemCardResponse> getItem(@PathVariable(name = "item_id") long itemId) {
