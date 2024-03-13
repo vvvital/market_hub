@@ -8,6 +8,7 @@ import com.teamchallenge.markethub.model.Item;
 import com.teamchallenge.markethub.repository.ItemRepository;
 import com.teamchallenge.markethub.service.ItemService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,22 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemResponse> getAllItemByCategoryId(ItemsFilterParams filterParams, Pageable pageable) {
-        return itemRepository.findAll(doFilter(filterParams, ATTR_CATEGORY), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, DEFAULT_SORT)))).stream().map(ItemResponse::convertToItemResponse).toList();
+        return itemRepository.findAll(doFilter(filterParams, ATTR_CATEGORY),
+                        PageRequest.of(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                pageable.getSortOr(Sort.by(Sort.Direction.ASC, DEFAULT_SORT)))).stream()
+                .map(ItemResponse::convertToItemResponse).toList();
     }
 
     @Override
     public List<ItemResponse> getAllItemBySubCategoryId(ItemsFilterParams filterParams, Pageable pageable) {
-        return itemRepository.findAll(doFilter(filterParams, ATTR_SUB_CATEGORY), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSortOr(Sort.by(Sort.Direction.ASC, DEFAULT_SORT)))).stream().map(ItemResponse::convertToItemResponse).toList();
+        return itemRepository.findAll(doFilter(filterParams, ATTR_SUB_CATEGORY),
+                        PageRequest.of(
+                                pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                pageable.getSortOr(Sort.by(Sort.Direction.ASC, DEFAULT_SORT)))).stream()
+                .map(ItemResponse::convertToItemResponse).toList();
     }
 
     /*
@@ -53,6 +64,7 @@ public class ItemServiceImpl implements ItemService {
     public int getCountItemsByCategoryId(long categoryId) {
         return itemRepository.countByCategoryId(categoryId);
     }
+
 
     @Override
     public int getCountItemsBySubCategoryId(long subCategoryId) {

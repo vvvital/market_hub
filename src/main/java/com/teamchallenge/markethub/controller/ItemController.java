@@ -33,7 +33,7 @@ public class ItemController {
 
         ItemsFilterParams itemsFilterParams = getRequestParams(categoryId, priceFrom, priceTo, available, brands);
         List<ItemResponse> filteredItemList = itemService.getAllItemByCategoryId(itemsFilterParams, pageable);
-        int size = size(itemService::getCountItemsByCategoryId, categoryId);
+        int size = total(itemService::getCountItemsByCategoryId, categoryId);
 
         return ResponseEntity.ok(new ItemsResponse(size, filteredItemList));
     }
@@ -48,16 +48,16 @@ public class ItemController {
 
         ItemsFilterParams itemsFilterParams = getRequestParams(subCategoryId, priceFrom, priceTo, available, brands);
         List<ItemResponse> filteredItemList = itemService.getAllItemBySubCategoryId(itemsFilterParams, pageable);
-        int size = size(itemService::getCountItemsBySubCategoryId, subCategoryId);
+        int total = total(itemService::getCountItemsBySubCategoryId, subCategoryId);
 
-        return ResponseEntity.ok(new ItemsResponse(size, filteredItemList));
+        return ResponseEntity.ok(new ItemsResponse(total, filteredItemList));
     }
 
     private static ItemsFilterParams getRequestParams(long id, double priceFrom, double priceTo, String available, List<String> brand) {
         return new ItemsFilterParams(id, priceFrom, priceTo, available, brand);
     }
 
-    private int size(Function<Long, Integer> function, long id) {
+    private int total(Function<Long, Integer> function, long id) {
         return function.apply(id);
     }
 
