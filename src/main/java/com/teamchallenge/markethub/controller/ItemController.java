@@ -9,6 +9,7 @@ import com.teamchallenge.markethub.service.impl.ItemServiceImpl;
 
 import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -69,29 +70,30 @@ public class ItemController {
     }
 
     @GetMapping("/{item_id}")
+    @Operation(summary = "Returns item by Id")
     public ResponseEntity<ItemCardResponse> getItem(@PathVariable(name = "item_id") long itemId) {
         return ResponseEntity.ok(itemService.getItemCardById(itemId));
     }
 
     @GetMapping("/top-seller")
-    public ResponseEntity<List<ItemResponse>> getTopSellerList() {
-        ItemResponse item = itemService.getItemById(100);
-        ItemResponse item2 = itemService.getItemById(128);
-        ItemResponse item3 = itemService.getItemById(153);
-        ItemResponse item4 = itemService.getItemById(178);
-
-        List<ItemResponse> list = Arrays.asList(item, item2, item3, item4);
-        return ResponseEntity.status(200).body(list);
+    @Operation(summary = "Returns the top 4 best selling items")
+    public ResponseEntity<ItemsResponse> getTopSellerList() {
+//        ItemResponse item = itemService.getItemById(100);
+//        ItemResponse item2 = itemService.getItemById(128);
+//        ItemResponse item3 = itemService.getItemById(153);
+//        ItemResponse item4 = itemService.getItemById(178);
+//        List<ItemResponse> list = Arrays.asList(item, item2, item3, item4);
+        return ResponseEntity.status(200).body(itemService.getTopSellerList());
     }
 
     @GetMapping("/shares")
-    public ResponseEntity<List<ItemResponse>> getShares() {
-        ItemResponse item = itemService.getItemById(203);
-        ItemResponse item2 = itemService.getItemById(228);
-        ItemResponse item3 = itemService.getItemById(253);
-        ItemResponse item4 = itemService.getItemById(278);
-
-        List<ItemResponse> list = Arrays.asList(item, item2, item3, item4);
-        return ResponseEntity.status(200).body(list);
+    @Operation(summary = "Returns top 4 items are most in stock")
+    public ResponseEntity<ItemsResponse> getShares() {
+//        ItemResponse item = itemService.getItemById(203);
+//        ItemResponse item2 = itemService.getItemById(228);
+//        ItemResponse item3 = itemService.getItemById(253);
+//        ItemResponse item4 = itemService.getItemById(278);
+//        List<ItemResponse> list = Arrays.asList(item, item2, item3, item4);
+        return ResponseEntity.status(200).body(itemService.shares());
     }
 }
