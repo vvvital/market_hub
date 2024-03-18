@@ -2,6 +2,7 @@ package com.teamchallenge.markethub.controller;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import com.teamchallenge.markethub.dto.item.ItemsResponse;
 import com.teamchallenge.markethub.repository.ItemRepositoryTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class ItemControllerTest {
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
-        int countItem = documentContext.read("$.length()");
+        int countItem = documentContext.read("$['items'].length()");
         assertThat(countItem).isEqualTo(4);
     }
 
@@ -38,7 +39,7 @@ public class ItemControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
-        int countItem = documentContext.read("$.length()");
+        int countItem = documentContext.read("$.['items'].length()");
 
         assertThat(countItem).isEqualTo(4);
     }
@@ -297,4 +298,8 @@ public class ItemControllerTest {
         assertThat(brand).isEqualTo(expectedBrand);
     }
 
+    @Test
+    public void shouldReturn4TopItems(){
+        ResponseEntity<ItemsResponse> response=restTemplate.getForEntity("/markethub/goods/top-seller", ItemsResponse.class);
+    }
 }
