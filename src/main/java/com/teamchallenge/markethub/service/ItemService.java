@@ -3,6 +3,7 @@ package com.teamchallenge.markethub.service;
 import com.teamchallenge.markethub.controller.filter.ItemsFilterParams;
 import com.teamchallenge.markethub.dto.item.ItemCardResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
+import com.teamchallenge.markethub.dto.item.ItemsResponse;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -20,4 +21,7 @@ public interface ItemService {
 
     int getCountItemsBySubCategoryId(long subCategoryId);
 
-}
+
+    ItemsResponse getTopSellerList();
+
+    ItemsResponse shares();

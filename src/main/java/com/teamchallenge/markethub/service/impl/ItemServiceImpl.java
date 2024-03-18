@@ -3,6 +3,7 @@ package com.teamchallenge.markethub.service.impl;
 import com.teamchallenge.markethub.controller.filter.ItemsFilterParams;
 import com.teamchallenge.markethub.dto.item.ItemCardResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
+import com.teamchallenge.markethub.dto.item.ItemsResponse;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.model.Item;
 import com.teamchallenge.markethub.repository.ItemRepository;
@@ -12,7 +13,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
 import static com.teamchallenge.markethub.controller.filter.Filter.doFilter;
@@ -69,5 +74,29 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public int getCountItemsBySubCategoryId(long subCategoryId) {
         return itemRepository.countBySubCategoryId(subCategoryId);
+    }
+
+    @Override
+    public ItemsResponse getTopSellerList() {
+        List<Item>items=itemRepository.findAll()
+                .stream()
+                .filter(item -> item.getCreateAt().isAfter(LocalDateTime.now().minusMonths(2)))
+                .filter(Item::isAvailable)
+                .filter(item -> item.getStockQuantity()>0)
+                .sorted(Comparator.comparing(Item::getSold).reversed())
+                .toList();
+        if (items.size()>4)items=items.subList(0,4);
+        return  new ItemsResponse(4,items.stream().map(ItemResponse::convertToItemResponse).toList());
+    }
+
+    @Override
+    public ItemsResponse shares() {
+        List<Item>items=itemRepository.findAll()
+                .stream()
+                .filter(Item::isAvailable)
+                .sorted(Comparator.comparing(Item::getStockQuantity).reversed())
+                .toList();
+        if (items.size()>4)items=items.subList(0,4);
+        return new ItemsResponse(4,items.stream().map(ItemResponse::convertToItemResponse).toList());
     }
 }
