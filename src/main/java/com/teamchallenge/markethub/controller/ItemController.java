@@ -72,22 +72,12 @@ public class ItemController {
     @GetMapping("/top-seller")
     @Operation(summary = "Returns the top 4 best selling items")
     public ResponseEntity<ItemsResponse> getTopSellerList() {
-//        ItemResponse item = itemService.getItemById(100);
-//        ItemResponse item2 = itemService.getItemById(128);
-//        ItemResponse item3 = itemService.getItemById(153);
-//        ItemResponse item4 = itemService.getItemById(178);
-//        List<ItemResponse> list = Arrays.asList(item, item2, item3, item4);
         return ResponseEntity.status(200).body(itemService.getTopSellerList());
     }
 
     @GetMapping("/shares")
     @Operation(summary = "Returns top 4 items are most in stock")
     public ResponseEntity<ItemsResponse> getShares() {
-//        ItemResponse item = itemService.getItemById(203);
-//        ItemResponse item2 = itemService.getItemById(228);
-//        ItemResponse item3 = itemService.getItemById(253);
-//        ItemResponse item4 = itemService.getItemById(278);
-//        List<ItemResponse> list = Arrays.asList(item, item2, item3, item4);
         return ResponseEntity.status(200).body(itemService.shares());
     }
 }

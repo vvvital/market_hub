@@ -21,7 +21,7 @@ public interface ItemService {
 
     int getCountItemsBySubCategoryId(long subCategoryId);
 
-
     ItemsResponse getTopSellerList();
 
     ItemsResponse shares();
+}

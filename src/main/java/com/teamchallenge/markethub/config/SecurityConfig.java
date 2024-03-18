@@ -74,7 +74,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://market-hub-oleksandrs-projects-fa78f5ab.vercel.app",
-                "http://localhost:3000", "https://market-hub-sigma.vercel.app"));
+                "http://localhost:3000", "https://market-hub-sigma.vercel.app","https://markethubstore.netlify.app",
+                "https://markethubstore.netlify.com", "https://market-hub-sigma-liard.vercel.app"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));

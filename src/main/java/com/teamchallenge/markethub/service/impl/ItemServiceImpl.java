@@ -78,25 +78,25 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemsResponse getTopSellerList() {
-        List<Item>items=itemRepository.findAll()
+        List<Item> items = itemRepository.findAll()
                 .stream()
                 .filter(item -> item.getCreateAt().isAfter(LocalDateTime.now().minusMonths(2)))
                 .filter(Item::isAvailable)
-                .filter(item -> item.getStockQuantity()>0)
+                .filter(item -> item.getStockQuantity() > 0)
                 .sorted(Comparator.comparing(Item::getSold).reversed())
                 .toList();
-        if (items.size()>4)items=items.subList(0,4);
-        return  new ItemsResponse(4,items.stream().map(ItemResponse::convertToItemResponse).toList());
+        if (items.size() > 4) items = items.subList(0, 4);
+        return new ItemsResponse(4, items.stream().map(ItemResponse::convertToItemResponse).toList());
     }
 
     @Override
     public ItemsResponse shares() {
-        List<Item>items=itemRepository.findAll()
+        List<Item> items = itemRepository.findAll()
                 .stream()
                 .filter(Item::isAvailable)
                 .sorted(Comparator.comparing(Item::getStockQuantity).reversed())
                 .toList();
-        if (items.size()>4)items=items.subList(0,4);
-        return new ItemsResponse(4,items.stream().map(ItemResponse::convertToItemResponse).toList());
+        if (items.size() > 4) items = items.subList(0, 4);
+        return new ItemsResponse(4, items.stream().map(ItemResponse::convertToItemResponse).toList());
     }
 }
