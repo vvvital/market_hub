@@ -1,3 +1,11 @@
+INSERT INTO categories(id,name,photo_preview) VALUES (100,'Комп’ютерна техніка', 'localhost:8080/markethub/categories/100/100.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (175, 'Мобільні телефони', 'localhost:8080/markethub/categories/175/175.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (250, 'Побутова техніка', 'localhost:8080/markethub/categories/250/250.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (325, 'Ігрові приставки', 'localhost:8080/markethub/categories/325/325.png');
+INSERT INTO categories(id,name,photo_preview) VALUES (400, 'Аудіотехніка', 'localhost:8080/markethub/categories/400/400.png');
+
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (100, 'Ноутбуки', 'localhost:8080/markethub/categories/100/110.png', 100);
+INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (160, 'Настільні комп’ютери', 'localhost:8080/markethub/categories/100/160.png', 100);
 INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (220, 'Планшети', 'localhost:8080/markethub/categories/100/220.png', 100);
 
 INSERT INTO sub_categories(id,name,photo_preview,category_id) VALUES (340, 'Смартфони', 'localhost:8080/markethub/categories/175/340.jpg', 175);

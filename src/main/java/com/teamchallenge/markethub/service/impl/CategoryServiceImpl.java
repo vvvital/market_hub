@@ -7,6 +7,7 @@ import com.teamchallenge.markethub.model.Category;
 import com.teamchallenge.markethub.repository.CategoryRepository;
 import com.teamchallenge.markethub.service.CategoryService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Cacheable("category")
     @Override
     public List<CategoryResponse> findAllCategories() {
         return categoryRepository.findAll()

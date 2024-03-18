@@ -14,7 +14,7 @@ public record UserDto(String firstname, String lastname, String email, String ph
                 user.getLastname(), user.getEmail(), user.getPhone(), user.getRegistrationDate(), user.getRole());
     }
 
-    public static User convertToNewSeller(AuthorizationRequest authorizationRequest) {
+    public static User convertToUser(AuthorizationRequest authorizationRequest) {
         User seller = new User();
         seller.setFirstname(authorizationRequest.firstname());
         seller.setLastname(authorizationRequest.lastname());
