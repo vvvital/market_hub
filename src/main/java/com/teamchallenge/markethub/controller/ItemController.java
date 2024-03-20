@@ -4,6 +4,7 @@ import com.teamchallenge.markethub.controller.filter.ItemsFilterParams;
 import com.teamchallenge.markethub.dto.item.ItemCardResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
 import com.teamchallenge.markethub.dto.item.ItemsResponse;
+import com.teamchallenge.markethub.dto.item.NewItemRequest;
 import com.teamchallenge.markethub.service.impl.ItemServiceImpl;
 
 import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
@@ -80,4 +81,13 @@ public class ItemController {
     public ResponseEntity<ItemsResponse> getShares() {
         return ResponseEntity.status(200).body(itemService.shares());
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Void> createNewItem(@RequestBody NewItemRequest newItemRequest) {
+        System.out.println("name: " + newItemRequest.getName());
+        System.out.println("buffer: " + newItemRequest.getPhotos());
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
