@@ -6,10 +6,13 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.teamchallenge.markethub.dto.category.CategoryResponse;
 import com.teamchallenge.markethub.dto.category.sub_category.SubCategoryResponse;
 import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
+import com.teamchallenge.markethub.error.exception.SubCategoryNotFoundException;
+import com.teamchallenge.markethub.model.SubCategory;
 import com.teamchallenge.markethub.service.impl.CategoryServiceImpl;
 import com.teamchallenge.markethub.service.impl.SubCategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +73,15 @@ public class CategoryController {
             return ResponseEntity.status(200).headers(headers).body(inputStreamResource.getContentAsByteArray());
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/brandsInSubCategory/{subCategory_id}")
+    public ResponseEntity<?> getBrandsBySubcategory(@PathVariable (name = "subCategory_id") Long subCategory_id){
+        try {
+            return ResponseEntity.status(200).body(subCategoryService.getBrandsBySubcategory(subCategory_id));
+        } catch (SubCategoryNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

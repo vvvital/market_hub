@@ -64,4 +64,15 @@ public class CategoryControllerTest {
         assertThat(countSubCategory).isEqualTo(3);
 
     }
+
+    @Test
+    public void shouldReturnAllBrandsInSubCategory(){
+        ResponseEntity<String> response = restTemplate.getForEntity("/markethub/categories/brandsInSubCategory/100", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext documentContext = JsonPath.parse(response.getBody());
+        int countSubCategory = documentContext.read("$.length()");
+
+        assertThat(countSubCategory).isEqualTo(10);
+    }
 }

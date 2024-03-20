@@ -40,7 +40,7 @@ public class SecurityConfig {
             "/markethub/categories/{category_id}/sub-categories", "/markethub/categories/{category_id}/{filename}",
             "/markethub/goods/top-seller", "/markethub/goods/shares", "/markethub/goods/categories/{category_id}",
             "/markethub/goods/sub-categories/{sub_category_id}", "/markethub/goods/{item_id}", "/v3/api-docs", "/markethub/orders",
-            "/swagger-ui/**","/swagger-resources/*","/v3/api-docs/**"};
+            "/swagger-ui/**","/swagger-resources/*","/v3/api-docs/**","/markethub/categories/brandsInSubCategory/{subCategory_id}"};
 
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
         this.userService = userService;
