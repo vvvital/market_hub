@@ -5,9 +5,10 @@ import com.teamchallenge.markethub.model.SubCategory;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SubCategoryService {
     List<SubCategoryResponse> findAllSubCategoriesByParent(Long parentId);
 
-    List<String> getBrandsBySubcategory(Long subCategoryId) throws ChangeSetPersister.NotFoundException;
+    Set<String> getBrandsBySubcategory(Long subCategoryId) throws ChangeSetPersister.NotFoundException;
 }

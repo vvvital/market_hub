@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 import javax.naming.NameNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -33,12 +35,12 @@ public class SubCategoryServiceImpl implements SubCategoryService {
     }
 
     @Override
-    public List<String> getBrandsBySubcategory(Long subCategoryId) throws SubCategoryNotFoundException {
+    public Set<String> getBrandsBySubcategory(Long subCategoryId) throws SubCategoryNotFoundException {
         SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(()->new SubCategoryNotFoundException("Sub category wasn't found"));
         List<Item> items = itemRepository.findItemsBySubCategory(subCategory);
         return items.stream()
                 .map(Item::getBrand)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
 }

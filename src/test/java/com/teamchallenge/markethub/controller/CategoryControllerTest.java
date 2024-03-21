@@ -73,6 +73,6 @@ public class CategoryControllerTest {
         DocumentContext documentContext = JsonPath.parse(response.getBody());
         int countSubCategory = documentContext.read("$.length()");
 
-        assertThat(countSubCategory).isEqualTo(10);
+        assertThat(countSubCategory).isEqualTo(5);
     }
 }
