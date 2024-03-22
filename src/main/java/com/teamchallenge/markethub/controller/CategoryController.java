@@ -77,11 +77,7 @@ public class CategoryController {
     }
 
     @GetMapping("/brandsInSubCategory/{subCategory_id}")
-    public ResponseEntity<?> getBrandsBySubcategory(@PathVariable (name = "subCategory_id") Long subCategory_id){
-        try {
-            return ResponseEntity.status(200).body(subCategoryService.getBrandsBySubcategory(subCategory_id).stream().toList());
-        } catch (SubCategoryNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<?> getBrandsBySubcategory(@PathVariable(name = "subCategory_id") Long subCategory_id) {
+        return ResponseEntity.status(200).body(subCategoryService.getBrandsBySubcategory(subCategory_id).stream().toList());
     }
 }
