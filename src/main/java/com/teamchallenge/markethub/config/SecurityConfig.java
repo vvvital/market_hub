@@ -4,6 +4,7 @@ import com.teamchallenge.markethub.config.jwt.AuthEntryPointJwt;
 import com.teamchallenge.markethub.config.jwt.AuthTokenFilter;
 import com.teamchallenge.markethub.config.jwt.JwtUtils;
 import com.teamchallenge.markethub.service.impl.UserServiceImpl;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableCaching
 public class SecurityConfig {
 
     private final UserServiceImpl userService;
@@ -72,7 +74,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://market-hub-oleksandrs-projects-fa78f5ab.vercel.app",
-                "http://localhost:3000", "https://market-hub-sigma.vercel.app"));
+                "http://localhost:3000", "https://market-hub-sigma.vercel.app","https://markethubstore.netlify.app",
+                "https://markethubstore.netlify.com", "https://market-hub-sigma-liard.vercel.app"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));

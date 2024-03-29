@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.teamchallenge.markethub.dto.item.detail.CategoryDetails;
 import com.teamchallenge.markethub.dto.item.detail.SubCategoryDetails;
 import com.teamchallenge.markethub.model.Item;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,8 +15,7 @@ import java.time.LocalDateTime;
 import static com.teamchallenge.markethub.dto.item.util.ItemUtils.createCategoryDetails;
 import static com.teamchallenge.markethub.dto.item.util.ItemUtils.createSubCategoryDetails;
 
-@Getter
-@Setter
+@Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ItemResponse {
     private long id;

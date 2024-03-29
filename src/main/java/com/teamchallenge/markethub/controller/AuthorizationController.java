@@ -46,7 +46,7 @@ public class AuthorizationController {
     public ResponseEntity<?> createNewUserAndAuthenticationAndSendMail(@RequestBody @Valid AuthorizationRequest authRequest,
                                                                        UriComponentsBuilder uri) {
         checkUserExist(authRequest.email(), authRequest.phone());
-        User newUser = userService.create(UserDto.convertToNewSeller(authRequest));
+        User newUser = userService.create(UserDto.convertToUser(authRequest));
         String username = newUser.getFirstname() + " " + newUser.getLastname();
         sendEmail(authRequest.email(), authRequest.firstname(), authRequest.lastname());
         return ResponseEntity.created(createUserLocation(uri, newUser))

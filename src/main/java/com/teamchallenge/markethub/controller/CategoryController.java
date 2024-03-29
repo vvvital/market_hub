@@ -1,18 +1,12 @@
 package com.teamchallenge.markethub.controller;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.teamchallenge.markethub.dto.category.CategoryResponse;
 import com.teamchallenge.markethub.dto.category.sub_category.SubCategoryResponse;
-import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
-import com.teamchallenge.markethub.error.exception.SubCategoryNotFoundException;
-import com.teamchallenge.markethub.model.SubCategory;
 import com.teamchallenge.markethub.service.impl.CategoryServiceImpl;
 import com.teamchallenge.markethub.service.impl.SubCategoryServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -29,16 +26,16 @@ import java.util.List;
 @RequestMapping("/markethub/categories")
 public class CategoryController {
 
-    @Value("${bucket.name}")
-    private String bucketName;
+    @Value("${images.storage}")
+    private String storagePath;
     private final CategoryServiceImpl categoryService;
     private final SubCategoryServiceImpl subCategoryService;
-    private final AmazonS3 s3Client;
+    private static final Logger log = LoggerFactory.getLogger(CategoryController.class);
 
-    public CategoryController(CategoryServiceImpl categoryService, SubCategoryServiceImpl subCategoryService, AmazonS3 s3Client) {
+
+    public CategoryController(CategoryServiceImpl categoryService, SubCategoryServiceImpl subCategoryService) {
         this.categoryService = categoryService;
         this.subCategoryService = subCategoryService;
-        this.s3Client = s3Client;
     }
 
     @GetMapping
@@ -59,25 +56,22 @@ public class CategoryController {
         return ResponseEntity.status(200).body(subCategoryResponseList);
     }
 
-
     @GetMapping("/{category_id}/{filename}")
-    public ResponseEntity<byte[]> getPhotoPreview(@PathVariable(name = "category_id") String path, @PathVariable(name = "filename") String filename) {
-        String bucketFilePath = "categories/" + path + "/" + filename;
-        try (S3Object s3Object = s3Client.getObject(bucketName, bucketFilePath);
-             S3ObjectInputStream objectInputStream = s3Object.getObjectContent()) {
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-
-            InputStreamResource inputStreamResource = new InputStreamResource(objectInputStream);
-            return ResponseEntity.status(200).headers(headers).body(inputStreamResource.getContentAsByteArray());
+    public ResponseEntity<byte[]> getPhotoPreview(@PathVariable(name = "category_id") String dir, @PathVariable(name = "filename") String filename) {
+        try {
+            Path path = Paths.get(storagePath + dir + "/", filename);
+            if (Files.exists(path)) {
+                byte[] bytes = Files.readAllBytes(path);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_JPEG);
+                return ResponseEntity.status(200).headers(headers).body(bytes);
+            } else {
+                log.error("photo not found");
+                return ResponseEntity.status(404).build();
+            }
         } catch (IOException e) {
+            log.error("{}", e.getMessage());
             return ResponseEntity.status(500).build();
         }
-    }
-
-    @GetMapping("/brandsInSubCategory/{subCategory_id}")
-    public ResponseEntity<?> getBrandsBySubcategory(@PathVariable(name = "subCategory_id") Long subCategory_id) {
-        return ResponseEntity.status(200).body(subCategoryService.getBrandsBySubcategory(subCategory_id).stream().toList());
     }
 }
