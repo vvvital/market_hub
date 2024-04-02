@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
     User create(User user);
-    void update(User user);
+    User update(User user);
     void remove(Integer id) throws UserNotFoundException;
     User findByEmail(String email);
     boolean existByEmailAndPhone(String email, String phone) throws UserExistException;

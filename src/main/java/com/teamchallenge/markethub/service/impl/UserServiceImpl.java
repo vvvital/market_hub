@@ -1,6 +1,5 @@
 package com.teamchallenge.markethub.service.impl;
 
-import com.teamchallenge.markethub.error.ErrorMessages;
 import com.teamchallenge.markethub.error.exception.UserNotFoundException;
 import com.teamchallenge.markethub.model.User;
 import com.teamchallenge.markethub.repository.UserRepository;
@@ -36,8 +35,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void update(User user) {
-        userRepository.save(user);
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
 
@@ -68,7 +67,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) {

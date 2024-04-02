@@ -4,6 +4,7 @@ import com.teamchallenge.markethub.dto.email.EmailRequest;
 import com.teamchallenge.markethub.dto.email.EmailResponse;
 import com.teamchallenge.markethub.dto.password.PasswordRequest;
 import com.teamchallenge.markethub.dto.password.PasswordResponse;
+import com.teamchallenge.markethub.dto.user.UpdateUserDTO;
 import com.teamchallenge.markethub.dto.user.UserDto;
 import com.teamchallenge.markethub.email.CustomTemplates;
 import com.teamchallenge.markethub.email.EmailSender;
@@ -86,6 +87,19 @@ public class UserController {
         user.setPassword(encodePassword(passwordRequest.password()));
         userService.update(user);
         return ResponseEntity.ok(new PasswordResponse("success", 200));
+    }
+
+    @PutMapping("/{id}/update")
+    public ResponseEntity<UserDto> updateUser(@PathVariable (name = "id") Integer id,
+                                              @RequestBody UpdateUserDTO updateUserDTO){
+        User user = userService.findById(id);
+        if (!updateUserDTO.getFirstname().isEmpty())user.setFirstname(updateUserDTO.getFirstname());
+        if (!updateUserDTO.getLastname().isEmpty())user.setLastname(updateUserDTO.getLastname());
+        if (!updateUserDTO.getEmail().isEmpty())user.setEmail(updateUserDTO.getEmail());
+        if (!updateUserDTO.getPhone().isEmpty())user.setPhone(updateUserDTO.getPhone());
+        if (!updateUserDTO.getPassword().isEmpty())user.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder()
+                .encode(updateUserDTO.getPassword()));
+        return ResponseEntity.ok(UserDto.convertToUserResponse(userService.update(user)));
     }
 
     private String encodePassword(String password) {
