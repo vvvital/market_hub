@@ -35,7 +35,7 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
 
     private final String[] postHttpRequests = new String[]{"/markethub/authorization",
-            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password","/markethub/orders"};
+            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password","/markethub/orders", "/markethub/goods/add"};
 
     private final String[] getHttpRequest = new String[]{"/markethub/del/{id}", "/markethub/all",
             "markethub/users/{id}/change_password", "/markethub/categories", "/markethub/categories/{category_id}",

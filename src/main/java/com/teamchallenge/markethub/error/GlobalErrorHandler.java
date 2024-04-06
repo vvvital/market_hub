@@ -82,4 +82,12 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
                 400, INCORRECT_PROPERTY_REFERENCE));
         return ResponseEntity.status(400).body(responseApiError);
     }
+
+    @ExceptionHandler(InvalidFormatBase64.class)
+    protected ResponseEntity<ResponseApiError> handleInvalidFormatBase64(InvalidFormatBase64 e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                400, INVALID_FORMAT_BASE64));
+        return ResponseEntity.status(400).body(responseApiError);
+    }
 }

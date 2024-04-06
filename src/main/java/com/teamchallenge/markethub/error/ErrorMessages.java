@@ -11,6 +11,7 @@ public final class ErrorMessages {
     public static final String CATEGORY_NOT_FOUND = "category_not_found";
     public static final String SUB_CATEGORY_NOT_FOUND = "sub_category_not_found";
     public static final String ITEM_NOT_FOUND = "item_not_found";
+    public static final String INVALID_FORMAT_BASE64 = "invalid_format_base64";
 
     private ErrorMessages() {
     }

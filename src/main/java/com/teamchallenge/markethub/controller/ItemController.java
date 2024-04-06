@@ -5,18 +5,23 @@ import com.teamchallenge.markethub.dto.item.ItemCardResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
 import com.teamchallenge.markethub.dto.item.ItemsResponse;
 import com.teamchallenge.markethub.dto.item.NewItemRequest;
+import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
+import com.teamchallenge.markethub.model.Item;
+import com.teamchallenge.markethub.model.Photo;
+import com.teamchallenge.markethub.service.CategoryService;
 import com.teamchallenge.markethub.service.impl.ItemServiceImpl;
-
-import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
-
+import com.teamchallenge.markethub.service.impl.PhotoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 import java.util.function.Function;
+
+import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
 
 @AllArgsConstructor
 @RestController
@@ -24,6 +29,8 @@ import java.util.function.Function;
 public class ItemController {
 
     private final ItemServiceImpl itemService;
+    private final PhotoServiceImpl photoService;
+    private final CategoryService categoryService;
 
     @GetMapping("/categories/{category_id}")
     public ResponseEntity<ItemsResponse> getItemsByCategoryId(
@@ -82,12 +89,23 @@ public class ItemController {
         return ResponseEntity.status(200).body(itemService.shares());
     }
 
+    @Transactional
     @PostMapping("/add")
-    public ResponseEntity<Void> createNewItem(@RequestBody NewItemRequest newItemRequest) {
-        System.out.println("name: " + newItemRequest.getName());
-        System.out.println("buffer: " + newItemRequest.getPhotos());
+    public ResponseEntity<Void> createNewItem(@RequestBody NewItemRequest request) {
+        long categoryId = request.getCategory();
+        if (!categoryService.categoryExist(categoryId)) {
+            throw new CategoryNotFoundException();
+        }
 
-        return ResponseEntity.noContent().build();
+        Item item = itemService.getItemByRequest(request);
+
+        String directory = String.valueOf(categoryId);
+        List<Photo> photoList = photoService.convertBase64ListToPhotoList(request.getPhotos(), directory, item);
+
+        item.setPhotoPreview(photoList.get(0).getUrl());
+        item.setPhoto(photoList);
+
+        itemService.create(item);
+        return ResponseEntity.status(200).build();
     }
-
 }

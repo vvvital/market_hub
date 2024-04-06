@@ -1,6 +1,7 @@
 package com.teamchallenge.markethub;
 
 import com.teamchallenge.markethub.dto.authorization.AuthorizationRequest;
+import com.teamchallenge.markethub.dto.item.NewItemRequest;
 import com.teamchallenge.markethub.dto.order.OrderItemDataRequest;
 import com.teamchallenge.markethub.dto.order.OrderRequest;
 import com.teamchallenge.markethub.model.OrderItemData;
@@ -27,15 +28,17 @@ public class MarketHubJsonTest {
     @Autowired
     private JacksonTester<OrderRequest> jsonOrder;
 
+    @Autowired
+    private JacksonTester<NewItemRequest> jsonItem;
+
     private AuthorizationRequest authorizationRequest;
     private OrderRequest orderRequest;
+    private NewItemRequest newItemRequest;
 
     @BeforeEach
     public void setup() {
         authorizationRequest = new AuthorizationRequest("Bilbo",
                 "Baggins", "bilbo@gmail.com", "380991419249", "pass123");
-
-
 
         OrderItemDataRequest item1 = new OrderItemDataRequest();
         item1.setItemId(128L);
@@ -57,6 +60,12 @@ public class MarketHubJsonTest {
                 .postalAddress("Backer street 221b")
                 .totalAmount(29900)
                 .build();
+
+        newItemRequest = new NewItemRequest("Name","Description", 100.00, "Brand",
+                List.of("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAADFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P"),
+                10,1L,100L,100L);
+
+
     }
 
     @Test
@@ -120,5 +129,39 @@ public class MarketHubJsonTest {
                 """;
         assertThat(jsonOrder.parse(expected))
                 .isEqualTo(orderRequest);
+    }
+
+    @Test
+    public void newItemRequestSerializationTest() throws IOException {
+        assertThat(jsonItem.write(newItemRequest)).isStrictlyEqualToJson("newItemRequest.json");
+        assertThat(jsonItem.write(newItemRequest)).extractingJsonPathStringValue("@.name")
+                .isEqualTo("Name");
+        assertThat(jsonItem.write(newItemRequest)).extractingJsonPathNumberValue("@.price")
+                .isEqualTo(100.00);
+        assertThat(jsonItem.write(newItemRequest)).extractingJsonPathNumberValue("@.owner")
+                .isEqualTo(1);
+        assertThat(jsonItem.write(newItemRequest)).extractingJsonPathArrayValue("@.photos")
+                .isEqualTo(List.of("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAADFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P"));
+    }
+
+    @Test
+    public void newItemRequestDeserializationTest() throws IOException {
+        String expected = """
+                {
+                   "name": "Name",
+                   "description": "Description",
+                   "price": 100.00,
+                   "brand": "Brand",
+                   "photos": [
+                     "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAADFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P"
+                   ],
+                   "stock_quantity": 10,
+                   "owner": 1,
+                   "category": 100,
+                   "sub_category": 100
+                 }
+                """;
+        assertThat(jsonItem.parse(expected))
+                .isEqualTo(newItemRequest);
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class Item {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotBlank(message = "price must not be empty")
+    @NotNull
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
@@ -40,8 +41,9 @@ public class Item {
     @Column(name = "create_at", nullable = false)
     private LocalDateTime createAt;
 
-    @NotBlank(message = "article must not be empty")
-    @Column(name = "article", nullable = false, unique = true)
+    //@NotBlank(message = "article must not be empty")
+    @UuidGenerator
+    @Column(name = "article", unique = true)
     private String article;
 
     @NotNull

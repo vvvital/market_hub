@@ -1,3 +1,8 @@
+INSERT INTO users(firstname, lastname, email, phone, password, registration_date, role)
+VALUES ('Bilbo', 'Bagging', 'bilbo@gmail.com', '380991816245', 'pass123','2024-01-26 12:12:0', 'SELLER'),
+       ('Tomas', 'Shelby', 'tomas@gmail.com', '380991717245', 'pass123','2024-01-26 12:12:0', 'SELLER'),
+       ('Gojo', 'Satoru', 'gojo@gmail.com', '380992836845', 'pass123','2024-01-26 12:12:0', 'SELLER');
+
 INSERT INTO categories(id,name,photo_preview) VALUES (100,'Комп’ютерна техніка', 'localhost:8080/markethub/categories/100/100.png');
 INSERT INTO categories(id,name,photo_preview) VALUES (175, 'Мобільні телефони', 'localhost:8080/markethub/categories/175/175.png');
 INSERT INTO categories(id,name,photo_preview) VALUES (250, 'Побутова техніка', 'localhost:8080/markethub/categories/250/250.png');

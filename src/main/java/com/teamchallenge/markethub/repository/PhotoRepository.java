@@ -1,10 +1,9 @@
 package com.teamchallenge.markethub.repository;
 
-import com.teamchallenge.markethub.model.Category;
+import com.teamchallenge.markethub.model.Photo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
-    Boolean existsCategoryById(long id);
+public interface PhotoRepository extends JpaRepository<Photo, Long> {
 }
