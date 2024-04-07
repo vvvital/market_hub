@@ -22,7 +22,6 @@ import java.util.List;
 
 import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
 import static com.teamchallenge.markethub.controller.filter.Filter.doFilter;
-import static com.teamchallenge.markethub.error.ErrorMessages.ITEM_NOT_FOUND;
 
 @AllArgsConstructor
 @Service
@@ -40,8 +39,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public void remove(long id) {
+        itemRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean itemExist(long id) {
+        return itemRepository.existsItemById(id);
+    }
+
+    @Override
     public ItemCardResponse getItemCardById(long id) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(ITEM_NOT_FOUND));
+        Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
         return ItemCardResponse.convertToItemCardResponse(item);
     }
 
@@ -69,8 +78,8 @@ public class ItemServiceImpl implements ItemService {
         stub method, need refactoring
      */
     @Override
-    public ItemResponse getItemById(long id) {
-        return ItemResponse.convertToItemResponse(itemRepository.findById(id).get());
+    public Item getItemById(long id) {
+        return itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
     }
 
     @Override

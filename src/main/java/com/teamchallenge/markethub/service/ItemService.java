@@ -12,13 +12,18 @@ import java.util.List;
 
 public interface ItemService {
     Item create(Item item);
+
+    void remove(long id);
+
+    boolean itemExist(long id);
+
     ItemCardResponse getItemCardById(long id);
 
     List<ItemResponse> getAllItemByCategoryId(ItemsFilterParams filterParams, Pageable pageable);
 
     List<ItemResponse> getAllItemBySubCategoryId(ItemsFilterParams filterParams, Pageable pageable);
 
-    ItemResponse getItemById(long id);
+    Item getItemById(long id);
 
     int getCountItemsByCategoryId(long categoryId);
 

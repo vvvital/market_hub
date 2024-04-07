@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -21,6 +22,7 @@ import java.util.*;
 public class PhotoServiceImpl implements PhotoService {
     private static final Logger log = LoggerFactory.getLogger(PhotoServiceImpl.class);
     private final PhotoRepository photoRepository;
+    private final static int PHOTOS_COUNT = 4;
 
     @Value("${storage.path}")
     private String path;
@@ -39,8 +41,8 @@ public class PhotoServiceImpl implements PhotoService {
     @Transactional
     @Override
     public List<Photo> convertBase64ListToPhotoList(List<String> base64Strings, String directoryName, Item item) {
-        List<Photo> photoList = new ArrayList<>(4);
-        List<PhotoBuffer> photoBuffers = new ArrayList<>(4);
+        List<Photo> photoList = new ArrayList<>(PHOTOS_COUNT);
+        List<PhotoBuffer> photoBuffers = new ArrayList<>(PHOTOS_COUNT);
         String storagePath = path + directoryName + "/";
 
         for (String str : base64Strings) {
@@ -56,6 +58,19 @@ public class PhotoServiceImpl implements PhotoService {
         }
         savePhotosInStorage(photoBuffers, storagePath);
         return photoList;
+    }
+
+    @Override
+    public void removePhotosFromStorage(Item item) {
+        String directory = item.getCategory().getId().toString();
+        String storagePath = path + directory + "/";
+        try {
+            for (Photo photo : item.getPhoto()) {
+                Files.deleteIfExists(Paths.get(storagePath, photo.getName()));
+            }
+        } catch (IOException e) {
+            log.error("Failed to delete photo {}", e.getMessage());
+        }
     }
 
     private PhotoBuffer decodeBase64ToPhoto(String base64, String name) {
@@ -100,16 +115,6 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     private record PhotoBuffer(String filename, byte[] buffer) {
-
     }
 
-    //    private void removePhotos(String storagePath, List<String> names) {
-//        try {
-//            for (String name : names) {
-//                Files.deleteIfExists(Paths.get(storagePath, name));
-//            }
-//        } catch (IOException e) {
-//            log.error("Failed to delete photo {}", e.getMessage());
-//        }
-//    }
 }

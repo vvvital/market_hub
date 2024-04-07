@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface PhotoService {
     void create(Photo photo);
+
     List<Photo> convertBase64ListToPhotoList(List<String> base64Strings, String directoryName, Item item);
+
+    void removePhotosFromStorage(Item item);
 }

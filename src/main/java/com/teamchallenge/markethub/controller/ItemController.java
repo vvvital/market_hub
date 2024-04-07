@@ -6,6 +6,7 @@ import com.teamchallenge.markethub.dto.item.ItemResponse;
 import com.teamchallenge.markethub.dto.item.ItemsResponse;
 import com.teamchallenge.markethub.dto.item.NewItemRequest;
 import com.teamchallenge.markethub.error.exception.CategoryNotFoundException;
+import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.model.Item;
 import com.teamchallenge.markethub.model.Photo;
 import com.teamchallenge.markethub.service.CategoryService;
@@ -91,7 +92,7 @@ public class ItemController {
 
     @Transactional
     @PostMapping("/add")
-    public ResponseEntity<Void> createNewItem(@RequestBody NewItemRequest request) {
+    public ResponseEntity<ItemResponseCreate> createNewItem(@RequestBody NewItemRequest request) {
         long categoryId = request.getCategory();
         if (!categoryService.categoryExist(categoryId)) {
             throw new CategoryNotFoundException();
@@ -105,7 +106,20 @@ public class ItemController {
         item.setPhotoPreview(photoList.get(0).getUrl());
         item.setPhoto(photoList);
 
-        itemService.create(item);
-        return ResponseEntity.status(200).build();
+        Item createdItem = itemService.create(item);
+        return ResponseEntity.status(200).body(new ItemResponseCreate(createdItem.getId()));
+    }
+
+
+    @DeleteMapping("/remove/{item_id}")
+    public ResponseEntity<Void> removeItem(@PathVariable(name = "item_id") long id) {
+        if (!itemService.itemExist(id)) {
+            throw new ItemNotFoundException();
+        }
+        photoService.removePhotosFromStorage(itemService.getItemById(id));
+        itemService.remove(id);
+        return ResponseEntity.ok().build();
     }
 }
+
+record ItemResponseCreate(long id) {}

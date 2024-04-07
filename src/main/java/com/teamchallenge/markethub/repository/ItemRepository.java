@@ -11,4 +11,6 @@ public interface ItemRepository extends JpaRepository<Item, Long>, PagingAndSort
     int countByCategoryId(long categoryId);
 
     int countBySubCategoryId(long subCategoryId);
+
+    boolean existsItemById(long id);
 }

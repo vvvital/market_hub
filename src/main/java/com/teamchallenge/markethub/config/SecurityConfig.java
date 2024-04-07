@@ -27,7 +27,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableCaching
+//@EnableCaching
 public class SecurityConfig {
 
     private final UserServiceImpl userService;
@@ -35,14 +35,14 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
 
     private final String[] postHttpRequests = new String[]{"/markethub/authorization",
-            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password","/markethub/orders", "/markethub/goods/add"};
+            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password", "/markethub/orders"};
 
     private final String[] getHttpRequest = new String[]{"/markethub/del/{id}", "/markethub/all",
             "markethub/users/{id}/change_password", "/markethub/categories", "/markethub/categories/{category_id}",
             "/markethub/categories/{category_id}/sub-categories", "/markethub/categories/{category_id}/{filename}",
             "/markethub/goods/top-seller", "/markethub/goods/shares", "/markethub/goods/categories/{category_id}",
             "/markethub/goods/sub-categories/{sub_category_id}", "/markethub/goods/{item_id}", "/v3/api-docs", "/markethub/orders",
-            "/swagger-ui/**","/swagger-resources/*","/v3/api-docs/**"};
+            "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**"};
 
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
         this.userService = userService;
@@ -55,7 +55,8 @@ public class SecurityConfig {
         return http
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, postHttpRequests).permitAll()
+                        .requestMatchers("/markethub/goods/add", "/markethub/goods/remove/{item_id}").authenticated()
+                        .requestMatchers(postHttpRequests).permitAll()
                         .requestMatchers(getHttpRequest).permitAll() // debug
                         .anyRequest().authenticated()
                 )
@@ -74,7 +75,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("https://market-hub-oleksandrs-projects-fa78f5ab.vercel.app",
-                "http://localhost:3000", "https://market-hub-sigma.vercel.app","https://markethubstore.netlify.app",
+                "http://localhost:3000", "https://market-hub-sigma.vercel.app", "https://markethubstore.netlify.app",
                 "https://markethubstore.netlify.com", "https://market-hub-sigma-liard.vercel.app"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));

@@ -65,7 +65,7 @@ public class Item {
     @Column(name = "photo_preview")
     private String photoPreview;
 
-    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Photo> photo;
 
     @Column(name = "sold")

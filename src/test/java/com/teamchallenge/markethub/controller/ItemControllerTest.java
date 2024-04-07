@@ -4,19 +4,19 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.teamchallenge.markethub.dto.item.ItemsResponse;
 import com.teamchallenge.markethub.dto.item.NewItemRequest;
+import com.teamchallenge.markethub.dto.login.LoginRequest;
 import com.teamchallenge.markethub.repository.ItemRepositoryTest;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -308,14 +308,47 @@ public class ItemControllerTest {
         assertThat(brand).isEqualTo(expectedBrand);
     }
 
+    //???
     @Test
     public void shouldReturn4TopItems() {
         ResponseEntity<ItemsResponse> response = restTemplate.getForEntity("/markethub/goods/top-seller", ItemsResponse.class);
     }
 
-    @Disabled
     @Test
     public void shouldCreateNewItem() {
+        //USER LOGIN
+        LoginRequest loginRequest = new LoginRequest("bilbo@gmail.com", "pass123");
+        ResponseEntity<String> loginResponse = restTemplate.postForEntity("/markethub/login", loginRequest, String.class);
+
+        //GET JWT TOKEN
+        DocumentContext documentContext = JsonPath.parse(loginResponse.getBody());
+        String jwt = documentContext.read("$.token");
+
+        //CREATE HEADER WITH TOKEN
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwt);
+
+        //CREATE NEW_ITEM_REQUEST
+        NewItemRequest newItemRequest = generateNewItemRequest();
+
+        //CREATE ENTITY WITH BODY & HEADER
+        HttpEntity<NewItemRequest> requestEntity = new HttpEntity<>(newItemRequest, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/markethub/goods/add", requestEntity, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        //GET ITEM_ID
+        documentContext = JsonPath.parse(response.getBody());
+        int itemId = documentContext.read("$.id");
+
+        //CREATE ENTITY WITH HEADER
+        HttpEntity<?> requestRemove = new HttpEntity<>(headers);
+
+        restTemplate.exchange("/markethub/goods/remove/" + itemId, HttpMethod.DELETE, requestRemove, String.class); //delete don`t work
+        assertThat(itemRepositoryTest.findById((long) itemId)).isEqualTo(Optional.empty());
+    }
+
+    private NewItemRequest generateNewItemRequest() {
         NewItemRequest newItemRequest = new NewItemRequest();
         newItemRequest.setName("Test-Item");
         newItemRequest.setDescription("None");
@@ -326,10 +359,6 @@ public class ItemControllerTest {
         newItemRequest.setOwner(1);
         newItemRequest.setCategory(100);
         newItemRequest.setSubCategory(100);
-
-        ResponseEntity<Void> response = restTemplate.postForEntity("/markethub/goods/add", newItemRequest,Void.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
+        return newItemRequest;
     }
-
 }
