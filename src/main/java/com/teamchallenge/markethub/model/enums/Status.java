@@ -1,5 +1,5 @@
 package com.teamchallenge.markethub.model.enums;
 
 public enum Status {
-    SUCCESS, FAILED, IN_PROCESS
+    NEW, IN_PROCESS, SUCCESS, CANCELED
 }
