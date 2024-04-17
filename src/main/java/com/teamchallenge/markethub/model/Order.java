@@ -51,11 +51,11 @@ public class Order {
     @Column(name = "customer_city", nullable = false)
     private String customerCity;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "order_items",
             joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_info_id")
+            inverseJoinColumns = @JoinColumn(name = "data_ordered_item_id")
     )
     private List<OrderedItem> items;
 

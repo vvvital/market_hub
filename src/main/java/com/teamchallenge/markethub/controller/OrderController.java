@@ -2,6 +2,7 @@ package com.teamchallenge.markethub.controller;
 
 import com.teamchallenge.markethub.dto.order.CreateOrderRequest;
 import com.teamchallenge.markethub.dto.order.OrderDataResponse;
+import com.teamchallenge.markethub.model.enums.Status;
 import com.teamchallenge.markethub.service.impl.OrderServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,19 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
-    //TODO: controller for remove order
-    //TODO: controller for change status
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable(name = "id") long id) {
+        orderService.remove(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> changeStatus(@PathVariable(name = "id") long id, @RequestBody OrderStatusChangeRequest request) {
+        orderService.updateStatus(id, request.newStatus());
+        return ResponseEntity.ok().build();
+    }
 }
+//todo: join users and orders
+
+
+record OrderStatusChangeRequest(Status newStatus){}

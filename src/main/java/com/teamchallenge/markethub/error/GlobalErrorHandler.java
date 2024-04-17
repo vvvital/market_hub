@@ -106,4 +106,12 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
                 400, EMPTY_ARRAY_DATA_ABOUT_ORDERED_ITEMS));
         return ResponseEntity.status(400).body(responseApiError);
     }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    protected ResponseEntity<ResponseApiError> handleOrderNotFoundException(OrderNotFoundException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                404, ORDER_NOT_FOUND));
+        return ResponseEntity.status(404).body(responseApiError);
+    }
 }
