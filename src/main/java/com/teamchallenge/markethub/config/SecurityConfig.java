@@ -35,13 +35,13 @@ public class SecurityConfig {
     private final JwtUtils jwtUtils;
 
     private final String[] postHttpRequests = new String[]{"/markethub/authorization",
-            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password", "/markethub/orders"};
+            "/markethub/login", "markethub/users/reset_password", "markethub/users/{id}/change_password"};
 
     private final String[] getHttpRequest = new String[]{"/markethub/del/{id}", "/markethub/all",
             "markethub/users/{id}/change_password", "/markethub/categories", "/markethub/categories/{category_id}",
             "/markethub/categories/{category_id}/sub-categories", "/markethub/categories/{category_id}/{filename}",
             "/markethub/goods/top-seller", "/markethub/goods/shares", "/markethub/goods/categories/{category_id}",
-            "/markethub/goods/sub-categories/{sub_category_id}", "/markethub/goods/{item_id}", "/v3/api-docs", "/markethub/orders",
+            "/markethub/goods/sub-categories/{sub_category_id}", "/markethub/goods/{item_id}", "/v3/api-docs",
             "/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**"};
 
     public SecurityConfig(UserServiceImpl userService, AuthEntryPointJwt authEntryPointJwt, JwtUtils jwtUtils) {
