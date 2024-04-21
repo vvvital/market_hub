@@ -21,12 +21,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/markethub/categories")
 public class CategoryController {
 
-    @Value("${images.storage}")
+    @Value("${storage.path}")
     private String storagePath;
     private final CategoryServiceImpl categoryService;
     private final SubCategoryServiceImpl subCategoryService;

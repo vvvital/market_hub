@@ -75,15 +75,15 @@ INSERT INTO favorites(user_id, item_id) VALUES (1, 128);
 
 INSERT INTO photos(id, name, url, item_id) VALUES (5223, '5223', 'localhost:8080/markethub/categories/100/5223.png',100);
 INSERT INTO photos(id, name, url, item_id) VALUES (5355, '5355', 'localhost:8080/markethub/categories/100/5355.png',100);
-INSERT INTO photos(id, name, url, item_id) VALUES (5487, '5487', 'localhost:8080/markethub/categories/100/5487.png',128);
+INSERT INTO photos(id, name, url, item_id) VALUES (6543, '6543', 'localhost:8080/markethub/categories/100/6543.png',100);
+INSERT INTO photos(id, name, url, item_id) VALUES (5487, '5487', 'localhost:8080/markethub/categories/100/5487.png',128); 1132 5487 5619 6675
 INSERT INTO photos(id, name, url, item_id) VALUES (5619, '5619', 'localhost:8080/markethub/categories/100/5619.png',128);
+INSERT INTO photos(id, name, url, item_id) VALUES (6675, '6675', 'localhost:8080/markethub/categories/100/6675.png',128);
 INSERT INTO photos(id, name, url, item_id) VALUES (5751, '5751', 'localhost:8080/markethub/categories/100/5751.png',303);
 INSERT INTO photos(id, name, url, item_id) VALUES (5883, '5883', 'localhost:8080/markethub/categories/100/5883.png',303);
+INSERT INTO photos(id, name, url, item_id) VALUES (6807, '6807', 'localhost:8080/markethub/categories/100/6807.png',303);
 INSERT INTO photos(id, name, url, item_id) VALUES (6015, '6015', 'localhost:8080/markethub/categories/100/6015.png',328);
 INSERT INTO photos(id, name, url, item_id) VALUES (6147, '6147', 'localhost:8080/markethub/categories/100/6147.png',328);
-INSERT INTO photos(id, name, url, item_id) VALUES (6279, '6279', 'localhost:8080/markethub/categories/100/6279.png',353);
-INSERT INTO photos(id, name, url, item_id) VALUES (6543, '6543', 'localhost:8080/markethub/categories/100/6543.png',100);
-INSERT INTO photos(id, name, url, item_id) VALUES (6675, '6675', 'localhost:8080/markethub/categories/100/6675.png',128);
-INSERT INTO photos(id, name, url, item_id) VALUES (6807, '6807', 'localhost:8080/markethub/categories/100/6807.png',303);
 INSERT INTO photos(id, name, url, item_id) VALUES (6939, '6939', 'localhost:8080/markethub/categories/100/6939.png',328);
+INSERT INTO photos(id, name, url, item_id) VALUES (6279, '6279', 'localhost:8080/markethub/categories/100/6279.png',353);
 INSERT INTO photos(id, name, url, item_id) VALUES (7071, '7071', 'localhost:8080/markethub/categories/100/7071.png',353);

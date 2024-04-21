@@ -1,0 +1,9 @@
+1. check if array_item_date is not empty
+2. convert list data_about_ordered_item to OrderedItem
+3. for each item from list
+    3.1 find item
+    3.2 check quantity
+    3.3 update quantity
+    3.4 update sold -> impl
+4. save orderedItems
+5. create order and save

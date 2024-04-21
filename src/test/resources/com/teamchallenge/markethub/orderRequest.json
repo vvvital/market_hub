@@ -7,15 +7,9 @@
   "items": [
     {
       "item_id": 128,
-      "name": "Ноутбук LENOVO IdeaPad 3",
-      "quantity": 1,
-      "price": 29900,
-      "category_id": 100,
-      "sub_category_id": 100
+      "quantity": 1
     }
   ],
-  "total_quantity": 1,
   "delivery_service": "NOVA_POSHTA",
-  "postal_address": "Backer street 221b",
-  "total_amount": 29900
+  "postal_address": "Backer street 221b"
 }

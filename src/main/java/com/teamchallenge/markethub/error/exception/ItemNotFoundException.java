@@ -1,10 +1,10 @@
 package com.teamchallenge.markethub.error.exception;
 
-import com.teamchallenge.markethub.repository.ItemRepository;
+import com.teamchallenge.markethub.error.ErrorMessages;
 
 public class ItemNotFoundException extends RuntimeException{
 
-    public ItemNotFoundException(String msg) {
-        super(msg);
+    public ItemNotFoundException() {
+        super(ErrorMessages.ITEM_NOT_FOUND);
     }
 }

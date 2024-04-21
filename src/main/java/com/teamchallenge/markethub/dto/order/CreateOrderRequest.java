@@ -14,25 +14,22 @@ import java.util.Objects;
 @Getter
 @Setter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class OrderRequest {
+public class CreateOrderRequest {
     private String customerFirstname;
     private String customerLastname;
     private String customerEmail;
     private String customerPhone;
     private String customerCity;
-    private List<OrderItemDataRequest> items;
-    private int totalQuantity;
+    private List<DateAboutTheOrderedItem> items;
     private DeliveryService deliveryService;
     private String postalAddress;
-    private int totalAmount;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderRequest that = (OrderRequest) o;
-        return totalQuantity == that.totalQuantity && totalAmount == that.totalAmount &&
-                Objects.equals(customerFirstname, that.customerFirstname) && Objects.equals(customerLastname, that.customerLastname) &&
+        CreateOrderRequest that = (CreateOrderRequest) o;
+        return  Objects.equals(customerFirstname, that.customerFirstname) && Objects.equals(customerLastname, that.customerLastname) &&
                 Objects.equals(customerEmail, that.customerEmail) && Objects.equals(customerPhone, that.customerPhone) &&
                 Objects.equals(customerCity, that.customerCity) && Objects.equals(items, that.items) && deliveryService == that.deliveryService &&
                 Objects.equals(postalAddress, that.postalAddress);
@@ -41,6 +38,11 @@ public class OrderRequest {
     @Override
     public int hashCode() {
         return Objects.hash(customerFirstname, customerLastname, customerEmail,
-                customerPhone, customerCity, items, totalQuantity, deliveryService, postalAddress, totalAmount);
+                customerPhone, customerCity, items, deliveryService, postalAddress);
+    }
+
+
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public record DateAboutTheOrderedItem(long itemId, int quantity) {
     }
 }

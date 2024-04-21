@@ -26,17 +26,16 @@ public class Photo {
     )
     private Long id;
 
-    @NotBlank(message = "photo name must not be empty")
-    @Column(name = "name", nullable = false)
+    //@NotBlank(message = "photo name must not be empty")
+    @Column(name = "name", nullable = true)
     private String name;
 
-    @NotBlank(message = "photo url must not be empty")
-    @Column(name = "url", nullable = false)
+    //@NotBlank(message = "photo url must not be empty")
+    @Column(name = "url", nullable = true)
     private String url;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+    @JoinColumn(name = "item_id", nullable = true)
     private Item item;
 
 }

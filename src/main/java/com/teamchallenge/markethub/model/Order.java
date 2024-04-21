@@ -8,7 +8,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,13 +51,13 @@ public class Order {
     @Column(name = "customer_city", nullable = false)
     private String customerCity;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "order_items",
             joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_info_id")
+            inverseJoinColumns = @JoinColumn(name = "data_ordered_item_id")
     )
-    private List<OrderItemData> items;
+    private List<OrderedItem> items;
 
     @NotNull
     @Column(name = "total_quantity", nullable = false)
@@ -73,11 +75,11 @@ public class Order {
 
     @NotNull
     @Column(name = "total_amount", nullable = false)
-    private int totalAmount;
+    private BigDecimal totalAmount;
 
     @Column(name = "create_at", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDate createAt;
+    private LocalDateTime createAt;
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

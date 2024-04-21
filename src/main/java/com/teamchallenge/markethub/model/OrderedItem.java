@@ -1,6 +1,8 @@
 package com.teamchallenge.markethub.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -12,27 +14,37 @@ import java.util.Objects;
 @Setter
 @Builder
 @Entity
-@Table(name = "order_item_data") //todo: change 'orders_items_data', add validation fields
-public class OrderItemData {
+@Table(name = "ordered_items") //todo: add validation fields
+public class OrderedItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "item_id", nullable = false)
     private Long itemId;
 
+    @NotBlank
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotBlank
+    @Column(name = "photo_preview", nullable = false)
+    private String photoPreview;
+
+    @NotNull
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    @NotNull
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @NotNull
     @Column(name = "category_id", nullable = false)
     private Long categoryId;
 
+    @NotNull
     @Column(name = "sub_category_id", nullable = false)
     private Long subCategoryId;
 
@@ -40,7 +52,7 @@ public class OrderItemData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderItemData that = (OrderItemData) o;
+        OrderedItem that = (OrderedItem) o;
         return quantity == that.quantity && Objects.equals(name, that.name) && Objects.equals(price, that.price) && Objects.equals(categoryId, that.categoryId) && Objects.equals(subCategoryId, that.subCategoryId);
     }
 
@@ -51,7 +63,7 @@ public class OrderItemData {
 
     @Override
     public String toString() {
-        return "ItemOrderInfo{" +
+        return "OrderedItem{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", quantity=" + quantity +

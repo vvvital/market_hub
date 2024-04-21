@@ -82,4 +82,36 @@ public class GlobalErrorHandler extends ResponseEntityExceptionHandler {
                 400, INCORRECT_PROPERTY_REFERENCE));
         return ResponseEntity.status(400).body(responseApiError);
     }
+
+    @ExceptionHandler(InvalidFormatBase64.class)
+    protected ResponseEntity<ResponseApiError> handleInvalidFormatBase64(InvalidFormatBase64 e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                400, INVALID_FORMAT_BASE64));
+        return ResponseEntity.status(400).body(responseApiError);
+    }
+
+    @ExceptionHandler(NotEnoughQuantityItemException.class)
+    protected ResponseEntity<ResponseApiError> handleNotEnoughQuantityItemException(NotEnoughQuantityItemException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                400, String.format("%s {%s}", NOT_ENOUGH_QUANTITY_ITEM, e.getId())));
+        return ResponseEntity.status(400).body(responseApiError);
+    }
+
+    @ExceptionHandler(EmptyArrayDataAboutTheOrderedItemsException.class)
+    protected ResponseEntity<ResponseApiError> handleEmptyArrayDataAboutTheOrderedItemsException(EmptyArrayDataAboutTheOrderedItemsException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                400, EMPTY_ARRAY_DATA_ABOUT_ORDERED_ITEMS));
+        return ResponseEntity.status(400).body(responseApiError);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    protected ResponseEntity<ResponseApiError> handleOrderNotFoundException(OrderNotFoundException e) {
+        log.error("{}", e.getMessage());
+        ResponseApiError responseApiError = new ResponseApiError(new ErrorDetails(
+                404, ORDER_NOT_FOUND));
+        return ResponseEntity.status(404).body(responseApiError);
+    }
 }

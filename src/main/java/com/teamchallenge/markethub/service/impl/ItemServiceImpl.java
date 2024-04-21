@@ -4,36 +4,53 @@ import com.teamchallenge.markethub.controller.filter.ItemsFilterParams;
 import com.teamchallenge.markethub.dto.item.ItemCardResponse;
 import com.teamchallenge.markethub.dto.item.ItemResponse;
 import com.teamchallenge.markethub.dto.item.ItemsResponse;
+import com.teamchallenge.markethub.dto.item.NewItemRequest;
 import com.teamchallenge.markethub.error.exception.ItemNotFoundException;
 import com.teamchallenge.markethub.model.Item;
+import com.teamchallenge.markethub.repository.CategoryRepository;
 import com.teamchallenge.markethub.repository.ItemRepository;
+import com.teamchallenge.markethub.repository.SubCategoryRepository;
+import com.teamchallenge.markethub.repository.UserRepository;
 import com.teamchallenge.markethub.service.ItemService;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.teamchallenge.markethub.controller.filter.FilterDefaultValues.*;
 import static com.teamchallenge.markethub.controller.filter.Filter.doFilter;
-import static com.teamchallenge.markethub.error.ErrorMessages.ITEM_NOT_FOUND;
 
 @AllArgsConstructor
 @Service
 public class ItemServiceImpl implements ItemService {
 
     private final static String DEFAULT_SORT = "sold";
-
     private final ItemRepository itemRepository;
+    private final CategoryRepository categoryRepository;
+    private final SubCategoryRepository subCategoryRepository;
+    private final UserRepository userRepository;
+
+    @Override
+    public Item create(Item item) {
+        return itemRepository.save(item);
+    }
+
+    @Override
+    public void remove(long id) {
+        itemRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean itemExist(long id) {
+        return itemRepository.existsItemById(id);
+    }
 
     @Override
     public ItemCardResponse getItemCardById(long id) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(ITEM_NOT_FOUND));
+        Item item = itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
         return ItemCardResponse.convertToItemCardResponse(item);
     }
 
@@ -61,8 +78,8 @@ public class ItemServiceImpl implements ItemService {
         stub method, need refactoring
      */
     @Override
-    public ItemResponse getItemById(long id) {
-        return ItemResponse.convertToItemResponse(itemRepository.findById(id).get());
+    public Item getItemById(long id) {
+        return itemRepository.findById(id).orElseThrow(ItemNotFoundException::new);
     }
 
     @Override
@@ -82,7 +99,7 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .filter(item -> item.getCreateAt().isAfter(LocalDateTime.now().minusMonths(2)))
                 .filter(Item::isAvailable)
-                .filter(item -> item.getStockQuantity() > 0)
+                .filter(item -> item.getStockQuantity() > 0) //do not need
                 .sorted(Comparator.comparing(Item::getSold).reversed())
                 .toList();
         if (items.size() > 4) items = items.subList(0, 4);
@@ -98,5 +115,10 @@ public class ItemServiceImpl implements ItemService {
                 .toList();
         if (items.size() > 4) items = items.subList(0, 4);
         return new ItemsResponse(4, items.stream().map(ItemResponse::convertToItemResponse).toList());
+    }
+
+    @Override
+    public Item getItemByRequest(NewItemRequest request) {
+        return NewItemRequest.convertToNewItem(request, categoryRepository, subCategoryRepository, userRepository);
     }
 }
