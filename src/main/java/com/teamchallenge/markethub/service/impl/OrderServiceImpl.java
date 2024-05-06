@@ -15,7 +15,6 @@ import com.teamchallenge.markethub.repository.OrderRepository;
 import com.teamchallenge.markethub.service.OrderService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

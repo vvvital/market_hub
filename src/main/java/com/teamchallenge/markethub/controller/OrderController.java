@@ -1,5 +1,7 @@
 package com.teamchallenge.markethub.controller;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.teamchallenge.markethub.dto.order.CreateOrderRequest;
 import com.teamchallenge.markethub.dto.order.OrderDataResponse;
 import com.teamchallenge.markethub.model.enums.Status;
@@ -41,5 +43,5 @@ public class OrderController {
 }
 //todo: join users and orders
 
-
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 record OrderStatusChangeRequest(Status newStatus){}
