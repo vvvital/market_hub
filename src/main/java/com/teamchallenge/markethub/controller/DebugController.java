@@ -19,6 +19,7 @@ public class DebugController {
 
     public DebugController(UserServiceImpl userService) {
         this.userService = userService;
+        System.out.println("debug controller has been started");
     }
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/del/{id}")
@@ -37,6 +38,11 @@ public class DebugController {
         }
 
         return ResponseEntity.ok(userDtoList);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<String> welcome (){
+        return ResponseEntity.ok("Welcome to Market_Hub");
     }
 }
 

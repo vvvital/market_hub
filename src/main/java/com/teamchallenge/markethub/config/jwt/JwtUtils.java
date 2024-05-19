@@ -16,8 +16,8 @@ public class JwtUtils {
 
     private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${jwtExpirationMs}")
-    private int jwtExpirationMs;
+//    @Value("${jwtExpirationMs}")
+    private int jwtExpirationMs=850000;
 
     private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 

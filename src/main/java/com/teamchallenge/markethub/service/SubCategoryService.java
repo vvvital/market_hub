@@ -10,5 +10,5 @@ import java.util.Set;
 public interface SubCategoryService {
     List<SubCategoryResponse> findAllSubCategoriesByParent(Long parentId);
 
-    Set<String> getBrandsBySubcategory(Long subCategoryId) throws ChangeSetPersister.NotFoundException;
+//    Set<String> getBrandsBySubcategory(Long subCategoryId) throws ChangeSetPersister.NotFoundException;
 }
